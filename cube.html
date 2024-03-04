@@ -331,14 +331,15 @@
     });
 
 
+    var startTime = 0;
     var ms = 0;
-
+    //a function that is constently being called once every milesecond 
     function addToTime(){
-      var startTime = Date.now(); 
       if(active || stopAdd){return};
       timer = document.getElementById("timer")
       allCubePropcubeProp = JSON.parse(localStorage.allCubes);
       timePass = Date.now() - startTime;
+      // console.log(timePass)
       //for every ms that passed over the time add it on 
       for(let i = 0; i < timePass; i++){
         timer.innerHTML = convertTime(parseInt(allCubePropcubeProp[cubeIndex].timeSpent)) + ms + " ms"
@@ -348,6 +349,7 @@
       startTime = Date.now(); 
     }
 
+    //add a second and store it 
     function addSeconds(){
       prvDate = Date.now()
       allCubePropcubeProp = JSON.parse(localStorage.allCubes);
@@ -357,6 +359,7 @@
     }
 
 
+    //format time 
     function convertTime(timeInSeconds){
       var hours = Math.floor(timeInSeconds / 3600)+"h ";
       var minutes = Math.floor((timeInSeconds % 3600) / 60)+"m ";
@@ -368,6 +371,8 @@
       return hours + minutes + seconds;
     }
 
+    
+    // toggle the opacity of the minimap
     function toggleView(view){
       sideEl=document.getElementById("miniMap").getElementsByClassName("miniMapSide")
       for(var i=0;i< sideEl.length; i++){
@@ -379,6 +384,8 @@
       }
     }
 
+
+    //add addEventListeners to get the user inputs 
     function addPlayerInput(){
       document.getElementById("game").addEventListener("mousedown", (event) => {
         // make it so that the curser is always the same 
@@ -423,7 +430,7 @@
       });
     }
 
-
+    // player input with mouse/ touch screen to move the screen 
     function playerMovement(event,mouse){
       //event.preventDefault();
       //reset cube pos after drag
@@ -461,6 +468,7 @@
     };
     
 
+    // drag the cube with the  
     function draging(event,mouse){
       if(isDragging){
         MovementSpeed = 1/6;
@@ -491,7 +499,7 @@
       }
     }
 
-
+    // from the mouse down and up find the directiont the user 
     function getDirection(){
       // get the angle and make it so that 
       gradient = (mouseUpXY[1] - mouseDownXY[1]) / (mouseUpXY[0] - mouseDownXY[0]);
@@ -508,6 +516,7 @@
         case "top":
           directoins=[150,30,150+180,30+180];
           closestDeg = closestTo(ang,directoins);
+          //duplicate code:
           if(closestDeg==directoins[0]){  
             return "up";
           }else if(closestDeg==directoins[1]){  
@@ -517,12 +526,11 @@
           }else if(closestDeg==directoins[3]){  
             return "right";
           }
-        break;
         case "right":
           
           directoins=[90,150+180,90+180,150];
           closestDeg = closestTo(ang,directoins);
-
+          //duplicate code:
           if(closestDeg==directoins[0]){  
             return "up";
           }else if(closestDeg==directoins[1]){  
@@ -532,11 +540,10 @@
           }else if(closestDeg==directoins[3]){  
             return "right";
           }
-        break;
         case "left":
           directoins = [90,30,90+180,30+180];
           closestDeg = closestTo(ang,directoins);
-
+          //duplicate code:
           if(closestDeg==directoins[0]){  
             return "up";
           }else if(closestDeg==directoins[1]){  
@@ -546,11 +553,13 @@
           }else if(closestDeg==directoins[3]){  
             return "right";
           }
-        break;
       }
+
+
+
     }
 
-
+    //get the closes number from an given array to a given number   
     function closestTo(num,arr){
       copyArr = arr.slice();
 
@@ -565,6 +574,7 @@
     }
 
 
+    // set the veriables to what the user slecetd when touching the cube 
     function setVeribals(side,trl,mouse){
       if(mouse){
         mouseDownXY = [event.clientX,event.clientY];
@@ -613,355 +623,362 @@
     }
 
 
-  function merge(...arr){
-    // new array with the same parremetors
-    const mergeArray = Array(arr[0].length).fill("").map(() => Array(arr[0].length).fill(""))
-     
-    for(var i=0;i < arr[0].length;i++){
-      for(var j=0;j < arr[0][i].length;j++){        
-        mergeArray[i][j] = []
-        for(let item = 0; item < arr.length; item++){
-          mergeArray[i][j].push(arr[item][i][j])
-        }
-      }
-    }
-    return mergeArray;
-  }
-
-
-  function getMapArray(size) {
-    const mapArray = [];
-    const twoDArray = [];
-    var rowArr = [];
-
-    for(var Si=0;Si<6;Si++){
-      const numberedMatrix = [];
-      var count = 1
-
-      for(var i=0;i<size;i++){ //for each row  
-        rowArr=[]
-
-        for(var j=0;j<size;j++){
-          rowArr.push(count)
-          count++
-        }
-        numberedMatrix.push(rowArr)
-      }
-      switch(Si){
-        case 0:   //top
-          mapArray.push(merge(numberedMatrix, numberedMatrix, spinSideArr(spinSideArr(spinSideArr(numberedMatrix)))))
-          break;
-        case 1:   //bottom 
-          mapArray.push(merge(merge(numberedMatrix,spinSideArr(spinSideArr(numberedMatrix))), spinSideArr(spinSideArr(numberedMatrix)), spinSideArr(spinSideArr(spinSideArr(numberedMatrix)))))
-          break;
-        case 2:   // right
-          mapArray.push(merge(numberedMatrix, numberedMatrix, numberedMatrix))
-          break;
-        case 3:   // back-left
-          mapArray.push(merge(numberedMatrix ,merge(numberedMatrix,spinSideArr(spinSideArr(numberedMatrix))), spinSideArr(spinSideArr(numberedMatrix))))
-          break;
-        case 4:   // left
-          mapArray.push(merge(numberedMatrix, spinSideArr(spinSideArr(spinSideArr(numberedMatrix))), spinSideArr(spinSideArr(spinSideArr(numberedMatrix)))))
-          break;
-        case 5:   // back-right
-          mapArray.push(merge(numberedMatrix, spinSideArr(numberedMatrix),merge(spinSideArr(numberedMatrix), spinSideArr(spinSideArr(spinSideArr(numberedMatrix))))))
-          break;
-      }
-    }
-
-    return mapArray;
-  }
-
-
-  //https://stackoverflow.com/questions/12274748/setting-multiple-attributes-for-an-element-at-once-with-javascript
-  function setAttributes(el, attrs) {
-    for(var key in attrs) {
-      el.setAttribute(key, attrs[key]);
-    }
-  }
-
-  function getSideLocation(sidesLen,offset){
-    offsetFromOrigen=sidesLen/2
-    if(offset){
-      return[
-      "translate3d(0px, 0px, "+offsetFromOrigen+"px)",                                                                                          //top
-      "rotateY(180deg) translate3d(0px, "+boxSize*(sizeCube-1)+"px, "+offsetFromOrigen+"px) rotate(180deg)",                                    //bottom
-      "rotateY(90deg) translate3d("+(-boxSize*(sizeCube-1)/2)+"px, 0px, "+(offsetFromOrigen+boxSize*(sizeCube-1)/2)+"px)",                  //right
-      "rotateY(-90deg) translate3d("+(-boxSize*(sizeCube-1)/2)+"px, 0px, "+(offsetFromOrigen-boxSize*(sizeCube-1)/2)+"px)"  ,               //back-left
-      "rotateX(-90deg) translate3d(0px, "+(-boxSize*(sizeCube-1)/2)+"px, "+(offsetFromOrigen+boxSize*(sizeCube-1)/2)+"px) ",                 //left
-      "rotateX(90deg) translate3d("+(boxSize*0)+"px,"+(-boxSize*(sizeCube-1)/2)+"px,"+(offsetFromOrigen-boxSize*(sizeCube-1)/2)+"px)",      //back-right
-      ];
-    }else{
-      return[
-      "translate3d(0px, 0px, "+offsetFromOrigen+"px)",                                 //top
-      "rotateY(180deg) translate3d(0px, 0px, "+offsetFromOrigen+"px) rotate(180deg)",  //bottom
-      "rotateY(90deg) translate3d(0px, 0px, "+offsetFromOrigen+"px)",                  //right
-      "rotateY(-90deg) translate3d(0px, 0px, "+offsetFromOrigen+"px)"  ,               //back-left
-      "rotateX(-90deg) translate3d(0px, 0px, "+offsetFromOrigen+"px) rotate(0deg)",    //left
-      "rotateX(90deg) translateZ("+offsetFromOrigen+"px)",                             //back-right
-      ];
-    }
-  }
-  function generateCube(CubeColArr){
-    sizeCube = CubeColArr[0][0].length;
-
-    boxSize = (cubeLen/sizeCube);
-    
-    document.getElementsByTagName('style')[0].innerHTML += '.cu{height:'+boxSize+'px !important; width:'+boxSize+'px !important ;} ';
-
-    const sideLocation      = getSideLocation(cubeLen, true);
-    const sideLocationnNoff = getSideLocation(cubeLen, false);
-    const minimapLocation   = getSideLocation(100, false);
-
-    // add the xy locations for the piece
-    locations = [];
-    X = 0;
-    Y = 0;
-
-    for(var i = 0; i < sizeCube; i++){
-      for(var j = 0;j < sizeCube; j++){
-        locations.push("translateX("+X+"px)");
-        X+=boxSize;
-      }
-      X=0
-    }
-
-    lis=[]
-    for(var i=0;i<sizeCube;i++){
-      for(var j=0;j<sizeCube;j++){
-        lis.push("translateY("+Y+"px)");
-      }
-      Y += boxSize;
-    }
-    //add the y trasformations
-    for(var i=0;i<locations.length;i++){
-      locations[i]+=" "+lis[i]
-    }
-
-    map = getMapArray(sizeCube)
-    
-    //make each side/piece 
-    row = 0;
-    col = 0;
-    count = 0;
-    movementClasses=["top","bottom","left","right"]
-    
-    cube.innerHTML=""
-    document.getElementById("miniMap").innerHTML=""
-    for(var Si=0;Si<6;Si++){//add 6 rotation divs and make mini map
-      cube.innerHTML += "<div class='spinface' style='width:"+cubeLen+" ;height:"+cubeLen+"; transform:"+sideLocationnNoff[Si]+"''></div>"
-      //cube.innerHTML += "<div class='dark' style='width:"+(cubeLen)+" ;height:"+(cubeLen)+"; transform:"+sideLocationnNoff[Si]+"''></div>"
-      document.getElementById("miniMap").innerHTML += "<div class='miniMapSide' style =' transform:"+minimapLocation[Si]+"'> <div style='transform:"+ "rotate(45deg)" +"'>"+sides[Si]+"</div> </div>"
-    }
-
-    for(var Si=0;Si<6;Si++){//6
-      for(var i=0;i<sizeCube**2;i++){// piece   
-
-        var trl = "";
-        if( map[Si][row][col].length == undefined){
-          trl = map[Si][row][col];
-        }else{// join the array with |   map[Si][row][col][0] map[Si][row][col][1]
-          trl = map[Si][row][col].join("|");
-        }
-        
-        cube.innerHTML += '<div trl="'+trl+'" ogCol='+CubeColArr[Si][col][row]+' style="  background:'+valToColour[CubeColArr[Si][col][row]] +'; transform: '+sideLocation[Si] +locations[i] +';  "  '+ 'class="sq  cu pi"'  +  '  id="'+(sides[Si])+(i+1)+'" ></div>'
-        if(CubeColArr[Si][col][row]=="-"){
-          document.getElementById(sides[Si]+(i+1)).classList.add("noBorder")
-        }
-
-        setAttributes(document.getElementById(sides[Si]+(i+1)),{
-          "onmousedown":'setVeribals(\"'+sides[Si]+'\",\"'+trl +'\",true)',
-          "ontouchstart":'setVeribals(\"'+sides[Si]+'\",\"'+trl +'\",false)',
-        });
-        
-        row++
-        count++
-        if((i+1) % sizeCube == 0){
-          col+=1
-          row=0
-        }
-      }
-      row=0
-      col=0
-    }
-  }
-
-
-  // NOT IN USE
-  function populatecube(cubeSize){
-    //https://sentry.io/answers/how-can-i-create-a-two-dimensional-array-in-javascript/#:~:text=There%20are%2C%20broadly%20speaking%2C%20two,array%20to%20create%20nested%20arrays.
-    Arr = [[],[],[],[],[],[]] 
-    CodeForColour=["W","Y","B","G","R","O"]
-    for(var i =0;i<6;i++){
-      let my2DArray = Array(cubeSize).fill().map(() => Array(cubeSize).fill(CodeForColour[i]));
-      Arr[i] = my2DArray;
-    } 
-    return Arr;
-  }
-
-  
-  //
-  function readCube(sizeCube){
-    //arr[side][layer][piece]
-    cubeColour=[]
-    for(var Si=0 ;Si<6; Si++){//side
-      count=0
-      side=[]
-      for(var ro=0;ro<sizeCube;ro++){
-        row=[]
-        for(var pi=0;pi<sizeCube;pi++){
-          count++
-          boxCol = document.getElementById((sides[Si])+(count)).getAttribute("ogcol")
-          row.push(boxCol)
-        }
-        side.push(row)
-      }
-      cubeColour.push(side)
-    }
-    return cubeColour;
-  }
-
-  
-  function spinSideArr(side){
-    const rows = side.length;
-    // Create a new empty matrix with swapped rows and columns (use )
-    const rotatedMatrix = new Array(rows).fill(0).map(() => new Array(rows).fill(0));
-
-    for (let i = 0; i < rows; i++) {
-      for (let j = 0; j < rows; j++) {
-        rotatedMatrix[j][(rows- 1) - i] = side[i][j];        
-      }
-    }
-
-    return rotatedMatrix;
-  }
-
-
-  function move(size,side,num,direction,save){
-    map = getMapArray(size)
-    num = num.split("|")
-    var sideIndex = 0;
-    const delayForSwap = parseFloat(getComputedStyle(document.getElementsByClassName("spinface")[sides.indexOf("top")]).transitionDuration.replace("s",""))*1000
-
-    switch(side){
-      case "top":     //(0th side)
-        //num[0] turnPi
-        sideIndex = 0;
-        turnPi = getNumbersToSwap(map[0], parseInt(num[sideIndex]), direction, sideIndex, side)
-        sidesTurn = SideTurning(side,map[0],num,direction,sideIndex)
-        if(direction=="up"||direction=="bottom"){
-          dir=0
-        }else if(direction=="left"||direction=="right"){
-          dir=1
-        }
-        
-        break;
-      case "right":   //(2th side)
-        //num[1]
-        sideIndex = 1;
-        turnPi = getNumbersToSwap(map[2],parseInt(num[sideIndex]),direction,sideIndex,side)
-        sidesTurn = SideTurning(side,map[2],num,direction,sideIndex)
-        if(direction=="up"||direction=="bottom"){
-          dir = 0
-        }else if(direction=="left" || direction=="right"){
-          dir = 1
-        }
-
-        break;
-      case "left":   //(4th side)
-        //num[2]
-        sideIndex = 2;
-        turnPi = getNumbersToSwap(map[3],parseInt(num[sideIndex]), direction, sideIndex, side);
-        sidesTurn = SideTurning(side,map[3],num,direction,sideIndex);
-
-        if(direction=="up" || direction=="bottom"){
-          dir = 1;
-        }else if(direction=="left" || direction=="right"){
-          dir = 0;
-        }
-        break;
-    }
-    sideTurnOfset= [sidesTurn[3],sidesTurn[0],sidesTurn[1],sidesTurn[2]];
-    
-    //get the ids needed to swap   
-    ids = [];
-    for(var i=0; i<sidesTurn.length; i++){
-      ids.push(getIDofNum(size,sidesTurn[i],turnPi,sideIndex,dir))//push an array of ids 
-    }
-    const idsOfset = [ids[3],ids[0],ids[1],ids[2]];
-    // all for show
-    for(var pi=0;pi<ids.length;pi++){
-      for(var i=0;i<ids[pi].length;i++){
-        //elm=document.getElementById(ids[pi][i])
-        //transform-origin =
-        // document.getElementsByClassName("spinface")[sides.indexOf(sidesTurn[pi])].appendChild(elm)
-
-        // transformation = (elm.style.transform).split(" ");
-
-        // elm.style.transform=transformation.slice(-2,transformation.length).join(" ");
-
-
-        // document.getElementsByClassName("spinface")[sides.indexOf(sidesTurn[pi])].appendChild(document.getElementById(ids[pi][i]));
-        // transformation = (document.getElementById(ids[pi][i]).style.transform).split(" ");
-        // document.getElementById(ids[pi][i]).style.transform = transformation.slice(-2,transformation.length).join(" ");
-      }
-    }
-    
-    // setTimeout(function() {// rotate it now fr fr fr fr 
+    // gets 2d arrays and "overlapping them" to combine them to a single 2d array
+    function merge(...arr){
+      // new array with the same parremetors
+      const mergeArray = Array(arr[0].length).fill("").map(() => Array(arr[0].length).fill(""))
       
-      //remove from the spin face 
-
-      
-      //gett all the things to swap 
-      transformations=[]
-      trls=[]
-      ogIds=[]
-      mouseDowns=[]
-      touchDowns=[]
-      for(var pi=0;pi<ids.length;pi++){
-        for(var i=0;i<ids[pi].length;i++){
-          transformations.push(document.getElementById(ids[pi][i]).style.transform)
-          trls.push(document.getElementById(ids[pi][i]).getAttribute("trl"));
-          ogIds.push(document.getElementById(ids[pi][i]).id);
-          mouseDowns.push(document.getElementById(ids[pi][i]).getAttribute("onmousedown"));
-          touchDowns.push(document.getElementById(ids[pi][i]).getAttribute("ontouchstart"));
+      for(var i=0;i < arr[0].length;i++){
+        for(var j=0;j < arr[0][i].length;j++){        
+          mergeArray[i][j] = []
+          for(let item = 0; item < arr.length; item++){
+            mergeArray[i][j].push(arr[item][i][j])
+          }
         }
       }
-      var classToId=[]
-      var count=0
-      //for(var Si=0;Si<4;Si++){
-      var ElementList=[]
+      return mergeArray;
+    }
+
+    // an array that describes the trl for each peice 
+    function getMapArray(size) {
+      const mapArray = [];
+      const twoDArray = [];
+      var rowArr = [];
+
+      for(var Si=0;Si<6;Si++){
+        const numberedMatrix = [];
+        var count = 1
+
+        for(var i=0;i<size;i++){ //for each row  
+          rowArr=[]
+
+          for(var j=0;j<size;j++){
+            rowArr.push(count)
+            count++
+          }
+          numberedMatrix.push(rowArr)
+        }
+        switch(Si){
+          case 0:   //top
+            mapArray.push(merge(numberedMatrix, numberedMatrix, spinSideArr(spinSideArr(spinSideArr(numberedMatrix)))))
+            break;
+          case 1:   //bottom 
+            mapArray.push(merge(merge(numberedMatrix,spinSideArr(spinSideArr(numberedMatrix))), spinSideArr(spinSideArr(numberedMatrix)), spinSideArr(spinSideArr(spinSideArr(numberedMatrix)))))
+            break;
+          case 2:   // right
+            mapArray.push(merge(numberedMatrix, numberedMatrix, numberedMatrix))
+            break;
+          case 3:   // back-left
+            mapArray.push(merge(numberedMatrix ,merge(numberedMatrix,spinSideArr(spinSideArr(numberedMatrix))), spinSideArr(spinSideArr(numberedMatrix))))
+            break;
+          case 4:   // left
+            mapArray.push(merge(numberedMatrix, spinSideArr(spinSideArr(spinSideArr(numberedMatrix))), spinSideArr(spinSideArr(spinSideArr(numberedMatrix)))))
+            break;
+          case 5:   // back-right
+            mapArray.push(merge(numberedMatrix, spinSideArr(numberedMatrix),merge(spinSideArr(numberedMatrix), spinSideArr(spinSideArr(spinSideArr(numberedMatrix))))))
+            break;
+        }
+      }
+
+      return mapArray;
+    }
+
+
+    // a helper function that I got from the internet: 
+    //https://stackoverflow.com/questions/12274748/setting-multiple-attributes-for-an-element-at-once-with-javascript
+    //sets multiple setAttributes to a element 
+    function setAttributes(el, attrs) {
+      for(var key in attrs) {
+        el.setAttribute(key, attrs[key]);
+      }
+    }
+
+    //retruns the difrent locations of the sides of a cube.
+    function getSideLocation(sidesLen,offset){
+      offsetFromOrigen=sidesLen/2
+      if(offset){
+        return[
+        "translate3d(0px, 0px, "+offsetFromOrigen+"px)",                                                                                          //top
+        "rotateY(180deg) translate3d(0px, "+boxSize*(sizeCube-1)+"px, "+offsetFromOrigen+"px) rotate(180deg)",                                    //bottom
+        "rotateY(90deg) translate3d("+(-boxSize*(sizeCube-1)/2)+"px, 0px, "+(offsetFromOrigen+boxSize*(sizeCube-1)/2)+"px)",                  //right
+        "rotateY(-90deg) translate3d("+(-boxSize*(sizeCube-1)/2)+"px, 0px, "+(offsetFromOrigen-boxSize*(sizeCube-1)/2)+"px)"  ,               //back-left
+        "rotateX(-90deg) translate3d(0px, "+(-boxSize*(sizeCube-1)/2)+"px, "+(offsetFromOrigen+boxSize*(sizeCube-1)/2)+"px) ",                 //left
+        "rotateX(90deg) translate3d("+(boxSize*0)+"px,"+(-boxSize*(sizeCube-1)/2)+"px,"+(offsetFromOrigen-boxSize*(sizeCube-1)/2)+"px)",      //back-right
+        ];
+      }else{
+        return[
+        "translate3d(0px, 0px, "+offsetFromOrigen+"px)",                                 //top
+        "rotateY(180deg) translate3d(0px, 0px, "+offsetFromOrigen+"px) rotate(180deg)",  //bottom
+        "rotateY(90deg) translate3d(0px, 0px, "+offsetFromOrigen+"px)",                  //right
+        "rotateY(-90deg) translate3d(0px, 0px, "+offsetFromOrigen+"px)"  ,               //back-left
+        "rotateX(-90deg) translate3d(0px, 0px, "+offsetFromOrigen+"px) rotate(0deg)",    //left
+        "rotateX(90deg) translateZ("+offsetFromOrigen+"px)",                             //back-right
+        ];
+      }
+    }
+
+    //adds the elements the the cube
+    function generateCube(CubeColArr){
+      sizeCube = CubeColArr[0][0].length;
+
+      boxSize = (cubeLen/sizeCube);
       
-      for(var pi=0;pi<ids.length;pi++){
-        for(var i=0;i<ids[pi].length;i++){
-          document.getElementById(idsOfset[pi][i]).style.transform = transformations[count];
-          setAttributes(document.getElementById(idsOfset[pi][i]),{
-            "trl":          trls[count],
-            "onmousedown":  mouseDowns[count],
-            "ontouchstart": touchDowns[count],
+      document.getElementsByTagName('style')[0].innerHTML += '.cu{height:'+boxSize+'px !important; width:'+boxSize+'px !important ;} ';
+
+      const sideLocation      = getSideLocation(cubeLen, true);
+      const sideLocationnNoff = getSideLocation(cubeLen, false);
+      const minimapLocation   = getSideLocation(100, false);
+
+      // add the xy locations for the piece
+      locations = [];
+      X = 0;
+      Y = 0;
+
+      for(var i = 0; i < sizeCube; i++){
+        for(var j = 0;j < sizeCube; j++){
+          locations.push("translateX("+X+"px)");
+          X+=boxSize;
+        }
+        X=0
+      }
+
+      lis=[]
+      for(var i=0;i<sizeCube;i++){
+        for(var j=0;j<sizeCube;j++){
+          lis.push("translateY("+Y+"px)");
+        }
+        Y += boxSize;
+      }
+      //add the y trasformations
+      for(var i=0;i<locations.length;i++){
+        locations[i]+=" "+lis[i]
+      }
+
+      map = getMapArray(sizeCube)
+      
+      //make each side/piece 
+      row = 0;
+      col = 0;
+      count = 0;
+      movementClasses=["top","bottom","left","right"]
+      
+      cube.innerHTML=""
+      document.getElementById("miniMap").innerHTML=""
+      for(var Si=0;Si<6;Si++){//add 6 rotation divs and make mini map
+        cube.innerHTML += "<div class='spinface' style='width:"+cubeLen+" ;height:"+cubeLen+"; transform:"+sideLocationnNoff[Si]+"''></div>"
+        //cube.innerHTML += "<div class='dark' style='width:"+(cubeLen)+" ;height:"+(cubeLen)+"; transform:"+sideLocationnNoff[Si]+"''></div>"
+        document.getElementById("miniMap").innerHTML += "<div class='miniMapSide' style =' transform:"+minimapLocation[Si]+"'> <div style='transform:"+ "rotate(45deg)" +"'>"+sides[Si]+"</div> </div>"
+      }
+
+      for(var Si=0;Si<6;Si++){//6
+        for(var i=0;i<sizeCube**2;i++){// piece   
+
+          var trl = "";
+          if( map[Si][row][col].length == undefined){
+            trl = map[Si][row][col];
+          }else{// join the array with |   map[Si][row][col][0] map[Si][row][col][1]
+            trl = map[Si][row][col].join("|");
+          }
+          
+          cube.innerHTML += '<div trl="'+trl+'" ogCol='+CubeColArr[Si][col][row]+' style="  background:'+valToColour[CubeColArr[Si][col][row]] +'; transform: '+sideLocation[Si] +locations[i] +';  "  '+ 'class="sq  cu pi"'  +  '  id="'+(sides[Si])+(i+1)+'" ></div>'
+          if(CubeColArr[Si][col][row]=="-"){
+            document.getElementById(sides[Si]+(i+1)).classList.add("noBorder")
+          }
+
+          setAttributes(document.getElementById(sides[Si]+(i+1)),{
+            "onmousedown":'setVeribals(\"'+sides[Si]+'\",\"'+trl +'\",true)',
+            "ontouchstart":'setVeribals(\"'+sides[Si]+'\",\"'+trl +'\",false)',
           });
-          ElementList.push(document.getElementById(idsOfset[pi][i]));
-          document.getElementById(idsOfset[pi][i]).classList.add(ogIds[count]);
-          classToId.push(ogIds[count]);
-          count++;
+          
+          row++
+          count++
+          if((i+1) % sizeCube == 0){
+            col+=1
+            row=0
+          }
+        }
+        row=0
+        col=0
+      }
+    }
+
+
+    // NOT IN USE
+    function populatecube(cubeSize){
+      //https://sentry.io/answers/how-can-i-create-a-two-dimensional-array-in-javascript/#:~:text=There%20are%2C%20broadly%20speaking%2C%20two,array%20to%20create%20nested%20arrays.
+      Arr = [[],[],[],[],[],[]] 
+      CodeForColour=["W","Y","B","G","R","O"]
+      for(var i =0;i<6;i++){
+        let my2DArray = Array(cubeSize).fill().map(() => Array(cubeSize).fill(CodeForColour[i]));
+        Arr[i] = my2DArray;
+      } 
+      return Arr;
+    }
+
+    
+    // reads the cube and stores it in a 3d array
+    function readCube(sizeCube){
+      //arr[side][layer][piece]
+      cubeColour=[]
+      for(var Si=0 ;Si<6; Si++){//side
+        count=0
+        side=[]
+        for(var ro=0;ro<sizeCube;ro++){
+          row=[]
+          for(var pi=0;pi<sizeCube;pi++){
+            count++
+            boxCol = document.getElementById((sides[Si])+(count)).getAttribute("ogcol")
+            row.push(boxCol)
+          }
+          side.push(row)
+        }
+        cubeColour.push(side)
+      }
+      return cubeColour;
+    }
+
+    // spins a 2d array
+    function spinSideArr(side){
+      const rows = side.length;
+      // Create a new empty matrix with swapped rows and columns (use )
+      const rotatedMatrix = new Array(rows).fill(0).map(() => new Array(rows).fill(0));
+
+      for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < rows; j++) {
+          rotatedMatrix[j][(rows- 1) - i] = side[i][j];        
         }
       }
 
-      for(var i=0;i<ElementList.length;i++){
-        listOfclass=ElementList[i].classList.value.split(" ");
-        ElementList[i].id=listOfclass[listOfclass.length-1];
-        ElementList[i].classList.remove(listOfclass[listOfclass.length-1]);
-      }
-    // },delayForSwap)
-    if(save){
-      //wait for the move to be made to save it
-      setTimeout(function(){saveCube()}, delayForSwap+100)
+      return rotatedMatrix;
     }
-    
-    finished();
-  }
+
+    // fucntion that moves the cube:
+    function move(size,side,num,direction,save){
+      map = getMapArray(size)
+      num = num.split("|")
+      var sideIndex = 0;
+      const delayForSwap = parseFloat(getComputedStyle(document.getElementsByClassName("spinface")[sides.indexOf("top")]).transitionDuration.replace("s",""))*1000
+
+      switch(side){
+        case "top":     //(0th side)
+          //num[0] turnPi
+          sideIndex = 0;
+          turnPi = getNumbersToSwap(map[0], parseInt(num[sideIndex]), direction, sideIndex, side)
+          sidesTurn = SideTurning(side,map[0],num,direction,sideIndex)
+          if(direction=="up" || direction=="bottom"){
+            dir=0
+          }else if(direction=="left" || direction=="right"){
+            dir=1
+          }
+          
+          break;
+        case "right":   //(2th side)
+          //num[1]
+          sideIndex = 1;
+          turnPi = getNumbersToSwap(map[2],parseInt(num[sideIndex]),direction,sideIndex,side)
+          sidesTurn = SideTurning(side,map[2],num,direction,sideIndex)
+          if(direction=="up" || direction=="bottom"){
+            dir = 0
+          }else if(direction=="left" || direction=="right"){
+            dir = 1
+          }
+
+          break;
+        case "left":   //(4th side)
+          //num[2]
+          sideIndex = 2;
+          turnPi = getNumbersToSwap(map[3],parseInt(num[sideIndex]), direction, sideIndex, side);
+          sidesTurn = SideTurning(side,map[3],num,direction,sideIndex);
+          // use the secondery array or not 
+          if(direction=="up" || direction=="bottom"){
+            dir = 1;
+          }else if(direction=="left" || direction=="right"){
+            dir = 0;
+          }
+          break;
+      }
+      sideTurnOfset= [sidesTurn[3],sidesTurn[0],sidesTurn[1],sidesTurn[2]];
+      
+      //get the ids needed to swap   
+      ids = [];
+      for(var i=0; i<sidesTurn.length; i++){
+        ids.push(getIDofNum(size,sidesTurn[i],turnPi,sideIndex,dir))//push an array of ids 
+      }
+      const idsOfset = [ids[3],ids[0],ids[1],ids[2]];
+      // all for show
+
+      // THIS PART OF THE MOVE FUCNTION IS NOT DONE YET, IT WILL MAKE IT LOOK NICE  
+      for(var pi=0;pi<ids.length;pi++){
+        for(var i=0;i<ids[pi].length;i++){
+          //elm=document.getElementById(ids[pi][i])
+          //transform-origin =
+          // document.getElementsByClassName("spinface")[sides.indexOf(sidesTurn[pi])].appendChild(elm)
+
+          // transformation = (elm.style.transform).split(" ");
+
+          // elm.style.transform=transformation.slice(-2,transformation.length).join(" ");
 
 
+          // document.getElementsByClassName("spinface")[sides.indexOf(sidesTurn[pi])].appendChild(document.getElementById(ids[pi][i]));
+          // transformation = (document.getElementById(ids[pi][i]).style.transform).split(" ");
+          // document.getElementById(ids[pi][i]).style.transform = transformation.slice(-2,transformation.length).join(" ");
+        }
+      }
+      
+      // setTimeout(function() {// rotate it now fr fr fr fr 
+        
+        //remove from the spin face 
+
+        //gett all the things to swap 
+        // SWAP THE LOCATIONS OF THE PEICE 
+        transformations=[]
+        trls=[]
+        ogIds=[]
+        mouseDowns=[]
+        touchDowns=[]
+        for(var pi=0;pi<ids.length;pi++){
+          for(var i=0;i<ids[pi].length;i++){
+            transformations.push(document.getElementById(ids[pi][i]).style.transform)
+            trls.push(document.getElementById(ids[pi][i]).getAttribute("trl"));
+            ogIds.push(document.getElementById(ids[pi][i]).id);
+            mouseDowns.push(document.getElementById(ids[pi][i]).getAttribute("onmousedown"));
+            touchDowns.push(document.getElementById(ids[pi][i]).getAttribute("ontouchstart"));
+          }
+        }
+        var classToId=[]
+        var count=0
+        var ElementList=[]
+        
+        for(var pi=0;pi<ids.length;pi++){
+          for(var i=0;i<ids[pi].length;i++){
+            document.getElementById(idsOfset[pi][i]).style.transform = transformations[count];
+            setAttributes(document.getElementById(idsOfset[pi][i]),{
+              "trl":          trls[count],
+              "onmousedown":  mouseDowns[count],
+              "ontouchstart": touchDowns[count],
+            });
+            ElementList.push(document.getElementById(idsOfset[pi][i]));
+            document.getElementById(idsOfset[pi][i]).classList.add(ogIds[count]);
+            classToId.push(ogIds[count]);
+            count++;
+          }
+        }
+
+        for(var i=0;i<ElementList.length;i++){
+          listOfclass=ElementList[i].classList.value.split(" ");
+          ElementList[i].id=listOfclass[listOfclass.length-1];
+          ElementList[i].classList.remove(listOfclass[listOfclass.length-1]);
+        }
+      // },delayForSwap)
+      if(save){
+        //wait for the move to be made to save it
+        setTimeout(function(){saveCube()}, delayForSwap+100)
+      }
+      
+      finished();
+    }
+
+  // put the cube in its "finished" state if solved.
   function finished(){
     const changedState = JSON.parse(localStorage.allCubes);
     if(changedState[cubeIndex].doneScramble==false){return}
@@ -978,6 +995,7 @@
   }
 
 
+  //see if the cube is fully solved 
   function isDone(){
     const changedState = JSON.parse(localStorage.allCubes)[cubeIndex].solved;
 
@@ -1039,6 +1057,7 @@
     sideArr = getOnlyRo(sideArr, sidedir); 
 
     switch(side){
+
       case "top":{
         if(direction == "up"||direction == "bottom"){
           for(var i=0; i<sideArr.length; i++){
@@ -1054,7 +1073,7 @@
         }else{
           const spinArr = spinSideArr(sideArr)
           for(var i=0;i < sideArr.length; i++){
-        
+
             if(spinArr[i].includes(number)){
               if (direction == "left"){
                 return(spinArr[i]);
@@ -1065,6 +1084,7 @@
           }
         }
       }
+
       case "right":{
         if(direction == "left" || direction == "right"){
           for(var i=0; i<sideArr.length ;i++){
@@ -1090,6 +1110,7 @@
           }
         }
       }
+
       case "left":{
         if(direction=="left"||direction=="right"){
           for(var i=0; i<sideArr.length; i++){
@@ -1117,10 +1138,11 @@
         }
       }
     }
+
   }
 
 
-  //get only one part of an matrix
+  //get only one part of an matrix with arrays in them 
   function getOnlyRo(sideArr, direction){
     const Matrix = []
     for(var i=0;i<sideArr.length;i++){
@@ -1134,7 +1156,7 @@
   }
 
 
-  //get the sides to turn 
+  //get the sides to turn and spin the sides that need to be spun  
   function SideTurning(side, sideArr, number, direction, sidedir){
 
     sideArr = getOnlyRo(sideArr, sidedir);
@@ -1245,7 +1267,6 @@
         }
       }
 
-
     }else if(side=="left"){
       if(direction == "bottom"){
         sidesToTurn.push(1)
@@ -1302,17 +1323,16 @@
     //--------------------------------------------------------------
     //the side spun from will always be 0,2,4
 
-    
     //--------------
-    //not done ffunction 
+
+    //not done function 
 
     //if the last or first row has the number 
     
     //if the spin the array so that the rows and colloums swap, 
-    
   }
 
-
+  // set the cube to be fast
   function speedCube(fast){
     spinfaces = document.getElementsByClassName("spinface");
     piece = document.getElementsByClassName("sq");
@@ -1334,6 +1354,7 @@
 
   }
 
+  // get a random movement
   function randomMove(cubeS){
     face      = faces[Math.floor(Math.random()*faces.length)]
     piece     = cubeMap[sides.indexOf(face)][Math.floor(Math.random()*cubeS)][Math.floor(Math.random()*cubeS)];
@@ -1357,6 +1378,8 @@
   }
 
 
+  // get a list of movements that will be executed on the cube in order  
+  // there is a problem with the speed of the cube
   function moveList(moveList,speed) {  
     speedCube(true)
     for (var i = 0; i<moveList.length+1; i++) {//add an extra one for makeing the cube slow
@@ -1368,6 +1391,7 @@
             cubeProp = JSON.parse(localStorage.allCubes);
             cubeProp[cubeIndex].doneScramble = true
             localStorage.setItem('allCubes', JSON.stringify(cubeProp));
+            startTime = Date.now();
             setInterval(addToTime,1);
           }else{
             var par = moveList[index].split(",");
@@ -1379,9 +1403,7 @@
   }
 
 
-  //when i call a set time out on a function and re call the funtion i want each istance to be seperate and not change the variables in each case.
-  // i will fix this with a class 
-
+  // when i call a set time out on a function and re call the funtion i want each istance to be seperate and not change the variables in each case.
   function spinSideDirection(side,cubeSize,dir){
 
     delayForSwap = parseFloat(getComputedStyle(document.getElementsByClassName("spinface")[sides.indexOf("top")]).transitionDuration.replace("s",""))*1000
@@ -1555,13 +1577,13 @@
       )
     }
   }
-
-
+  // also not in use 
   function fillside(colour){
     return new Array(3).fill(0).map(() => new Array(3).fill(colour))
   }
 
 
+  //save the cube into local storage 
   function saveCube(){
     var changedState = JSON.parse(localStorage.allCubes);
     //change the state 
@@ -1569,7 +1591,9 @@
     localStorage.setItem('allCubes', JSON.stringify(changedState));
   }
 
-  
+
+  // the "main function"
+  // add error message if cube not found and generate the cube   
   function game(){
     //the function "indexOf" returns -1 if the element cant be found
     if(cubeIndex == -1){
@@ -1603,6 +1627,7 @@
       
       moveList(randomMovementsList, scrambleLen); 
     }else{
+      startTime = Date.now();
       setInterval(addToTime,1);
     };
     
