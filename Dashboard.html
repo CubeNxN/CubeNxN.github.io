@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="https://www.freeiconspng.com/uploads/3d-cube-logo-15.png">
+    <title>Dashboard</title>    
+</head>
+
+<body class="toggleDark">
+    
+    <insertBar></insertBar>
+    <insertD-L></insertD-L>
+    <link rel="stylesheet" href="menuBar.css">
+    <script src="menuBar.js"></script>
+
+    <div class="title-contain">
+        <h1 class="title">Dashboard</h1>
+    </div>
+    <div class="main">
+
+        <div onclick="closeBox" class="" id="containDisplay">
+
+        </div>
+
+    </div>
+    <insertfooter></insertfooter>
+
+</body>
+
+</html>
+
+<style>
+    body {
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        align-items: center;
+        align-content: center;
+        scrollbar-width: 1px;
+    }
+    body.dark{
+        background: black !important;
+    }
+
+    .sizeBox{
+        width: 100%;
+        padding: 3%;
+        background: #e4e5e596;
+        border-radius: 10px;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        flex-direction: row;
+    }
+
+    .arrImg{
+        cursor: pointer;
+        height: 100%;
+        width: 100%;
+        transition-duration: 1s;
+        background: #e1e3e4;
+        padding: 2px;
+        border-radius: 10px;
+    }
+
+    .binImg{
+        opacity: 0;
+        transition-duration: 1s;
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        width: 12%;
+        background: #ff00001a;
+        padding: 2px;
+        border-radius: 10px;
+    }
+    .arrR{
+        rotate: 180deg;
+    }
+    .arrBox{
+        display: flex;
+        width: 27px;
+    }
+    
+    .innerAro {
+        display: flex;
+        background: #e1e3e4;
+        border-radius: 12px;
+        align-items: center;
+        font-family: monospace;
+        justify-content: center;
+        font-size: xx-large;
+        width: 50%;
+    }
+    .xe{
+      font-size:44px;  
+    }
+
+    #infoText{
+        transition-duration: 2s;
+        position: absolute;
+        display: block;
+        background-color: red;
+        z-index: 1;
+        opacity: 0;
+        width: 100px;
+        height: 100px;
+    }
+    .main {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        margin-top: 13%;
+        width: 89%;
+        height: auto;
+    }
+
+    #containDisplay {
+        background: linear-gradient(180deg, rgb(211 211 255 / 17%), transparent);
+        width: 88%;
+        height: 80%;
+        /* overflow-y: scroll; */
+        padding: 30px;
+        transition-duration: 0.7s;
+        border-radius: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        /* justify-content: space-between; */
+    }
+
+    .prop {
+        background-color: #e9e6e6bf;
+        display: flex;
+        text-align: center;
+        border-radius: 11px;
+        padding: 11px;
+        z-index: 10;
+        height: 5%;
+        transition-duration: 0.7s;
+        box-shadow: 0px 0px 20px 0px rgb(0 9 55 / 40%);
+        flex-direction: column;
+        font-family: monospace;
+        align-items: center;
+    }
+
+    .prop:hover {
+        box-shadow: 0px 0px 20px 4px rgb(0 9 55 / 40%);
+        background-color: white;
+        height: 15%;
+    }
+
+    .ExtLinkImg {
+        opacity: 0;
+        transition-duration: 0.3s;
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        width: 12%;
+    }
+
+    .sizeC{
+        color: black;
+    }
+
+    .other {
+        opacity: 0;
+        transition-delay: 0.5;
+        transition-duration: 1s;
+    }
+
+    .prop:hover>.sizeC>.other {
+        opacity: 1;
+        background: #dededecf;
+        border-radius: 13px;
+        padding: 4px;
+    }
+
+    .plusContain {
+        position: absolute;
+        display: flex;
+        width: 40%;
+        transition-duration: 1s;
+        height: 40%;
+        z-index: 51;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .addCon {
+        cursor: pointer;
+        transition-duration: 1s !important;
+        background: linear-gradient(360deg, #ffffff, #ebf1f5) !important;
+        display: flex;
+        padding: 26px;
+        width: 200px;
+        height: 200px;
+        perspective: 600px;
+        border: 4px solid #9292921f;
+        transition-duration: 0.5s;
+        border-radius: 12px;
+        background: linear-gradient(45deg, #ffeeee, #d5e8ff);
+        margin: 50px;
+        margin-left: 1vw;
+        justify-content: space-evenly;
+        align-content: center;
+        flex-wrap: wrap;
+        flex-direction: column;
+        align-items: center;
+
+    }
+
+    .addL>div {
+        opacity: 0;
+        transition-delay: 0.12s;
+        transition-duration: 1s;
+    }
+
+    .addR {
+        width: 13%;
+        height: 59%;
+        transition-duration: 1s;
+        position: absolute;
+        border-radius: 13px;
+        background-color: white;
+    }
+
+    .addL {
+        width: 59%;
+        height: 13%;
+        position: absolute;
+        transition-duration: 1s;
+        border-radius: 13px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: white;
+    }
+
+    .addCon.active>.plusContain>.addL {
+        transition-delay: 0s;
+        background: #c7c7c770;
+        width: 217%;
+        margin-top: 57%;
+        height: 208%;
+    }
+
+    .addCon.active>.plusContain>.addL>div {
+        opacity: 1;
+    }
+
+    .addCon.active>.plusContain {
+        
+        margin-top: -7%;
+    }
+
+    .addCon.active>.addCube {
+        margin-top: -232px;
+    }
+
+    .addCon.active {
+        height: 300px;
+        cursor: default !important;
+    }
+
+    #addBtn {
+        background: linear-gradient(45deg, #ffeeee, #d5e8ff);
+        padding: 12px;
+        border: 4px solid #9292921f;
+        border-radius: 10px;
+        margin-top: 6%;
+        transition-duration: 1s;
+        font-family: monospace;
+    }
+
+    #addBtn:hover {
+        cursor: pointer;
+    }
+
+    .extra {
+        width: 90%;
+        height: 90%;
+        border-radius: 10px;
+        background: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        align-content: center;
+
+    }
+
+    #adding{
+        transition-duration: 0.5s;
+        /* position: fixed;
+        right: -48px;
+        width: 24%;
+        border-left: 4px solid #9292921f; */
+    }
+    /*https://www.w3schools.com/howto/howto_css_custom_scrollbar.asp*/
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px grey;
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #362b2b4d;
+        transition-duration: 0.8s;
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        transition-duration: 0.8s;
+        background: rgba(70, 67, 67, 0.676);
+    }
+
+    .cube-container {
+        opacity: 1;
+        display: flex;
+        padding: 26px;
+        width: 200px;
+        height: 200px;
+        perspective: 600px;
+        border: 4px solid #9292921f;
+        transition-duration: 0.5s;
+        border-radius: 12px;
+        background: linear-gradient(45deg, #ffeeee, #d5e8ff);
+        margin: 50px;
+        margin-left: 1vw;
+        justify-content: space-evenly;
+        align-content: center;
+        flex-wrap: wrap;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .cube-container:hover {
+        cursor: pointer;
+    }
+
+    .cube-container:hover>.cube {
+        transition-duration: 1s;
+        animation: rotateCube 4s infinite ease-in-out;
+    }
+
+    .cube-container:hover>img {
+        opacity: 1;
+    }
+
+    .cube {
+        position: relative;
+        width: 100px;
+        height: 100px;
+        transform-style: preserve-3d;
+        transform: rotateX(330deg) rotateY(45deg);
+        transition-duration: 1s;
+        transform-origin: center center;
+    }
+
+    .addCube {
+        position: relative;
+        width: 100px;
+        height: 100px;
+        transform-style: preserve-3d;
+        transform: rotateX(330deg) rotateY(45deg);
+        transition-duration: 1s;
+        transition-delay: 0s;
+        transform-origin: center center;
+    }
+    .solvedCube{
+        background:linear-gradient(45deg, #ebffef, #cfe5ff)
+    }
+    .displayPice{
+        background-color: #001f33;
+        border: 0.1px solid #243f51;
+    }
+
+    .face {
+        border-radius: 5px;
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        background-color: #001f33;
+        border: 2px solid #243f51;
+        line-height: 50px;
+        text-align: center;
+        font-size: 10px;
+        color: white;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, 33px);
+    }
+
+    .cu {
+        background: red;
+        /* position: absolute; */
+    }
+
+    .face.top {
+        transform: rotateX(90deg) translateZ(50px) rotate(90deg);
+    }
+
+    .face.bottom {
+        transform: rotateX(-90deg) translateZ(50px);
+    }
+
+    .face.front {
+        transform: translateZ(50px) rotate(90deg);
+    }
+
+    .face.back {
+        transform: rotateY(180deg) translateZ(50px) rotate(-90deg);
+    }
+
+    .face.left {
+        transform: rotateY(-90deg) translateZ(50px);
+    }
+
+    .face.right {
+        transform: rotateY(90deg) translateZ(50px) rotate(180deg);
+    }
+
+    .doneTime{
+        box-shadow: 0px 0px 20px 4px rgb(0 9 55 / 40%);
+        background: radial-gradient(#e9fdf045, #d1e6ff);
+        color: black;
+        width: 51%;
+        font-size: 17px;
+        height: auto !important;
+        margin-bottom: -12%;
+    }
+    
+    .doneTime:hover{
+        background-color: #afd3cd5c;
+    }
+    
+    .doneTime>.sizeC>.other{
+        opacity: 1;
+        font-size: 21px;
+        background: #14867070;
+        color: white;
+        border-radius: 13px;
+        padding: 4px;
+    }
+    
+    .doneTime:hover>.sizeC>.other{
+        background: #00574799;
+    }
+
+    .containSelection{   
+        margin-top: 2%;
+        margin-bottom: 2%;
+        width: 81%;
+        height: 73%;
+        display: flex;
+        text-align: center;
+        justify-content: space-between;
+        flex-direction: column;
+    }
+
+    .selection{
+        width: 100%;
+        height: 100%;
+        background: #efefef;
+        border-radius: 10px 
+    }
+
+    .tabs{
+        background: linear-gradient(180deg, #ffffff, transparent);
+        font-family: monospace;
+        font-size: 11px;
+        width: 100%;
+        height: 20%;
+        display: flex;
+    }
+    
+    #content{
+        background: #efefef;
+        position: relative;
+        transition-duration: 1s;
+        display: flex;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        flex-direction: column;
+        align-items: center;
+        overflow: auto;
+        height: 9vh;
+        width: 100%;
+    }
+    .tab{
+        width: 50%;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+        margin-top: 3%;
+        height: 61%;
+        background: #f7f7f7;
+        padding: 3px;
+        transition-duration: .5s;
+    }
+    .tab:hover{
+        cursor: pointer;
+        background: #ffffff3b;
+    }
+
+    .listItem{
+        display: flex;
+        padding-left: 12px;
+        font-family: monospace;
+        background: radial-gradient(white, #00000012);
+        width: 85%;
+        border-radius: 12px;
+        justify-content: space-between;
+        align-items: center;
+        margin: 1%;
+    }
+    .listItem:hover{
+        background: radial-gradient(gainsboro, #00000012);
+    }
+    .popUpInfo{
+        opacity: 0;
+        transition-duration: 0.5s;
+        position: fixed;
+        right: 0%;
+        bottom: -9%;
+        height: 0%;
+        width: auto;
+        background: #1818182e;
+        border-radius: 8px;
+        /* transition-delay: 0.3s; */
+        width: 100%;
+        display: flex;
+        background: #e5e5e68a;
+        align-items: center;
+        justify-content: center;
+    }
+    .listItem:hover>.popUpInfo{
+        display: block;
+        opacity: 1;
+        height: 12%;
+        
+    }
+
+    .showSettings{   
+        margin: 4px;
+        margin-top: 4px;
+        border-radius: 12px;    
+        height: 11%;
+        padding: 2%;
+        display: flex;
+        background: #bebebe;
+        justify-content: center;
+        flex-direction: row;
+        font-family: monospace;
+        align-items: center;
+        transition-duration: 1s;
+    }
+    .showSettings:hover{
+        cursor: pointer;
+    }
+    .showSettings.active>.dropDownArr{
+        rotate: 0deg;
+    }
+    .showSettings.active{
+        margin-top: 11%;
+        background: #efefef;
+    }
+    .showSettings.active+#content{
+        height: 0%;
+        overflow-y: hidden;
+    }
+    
+    .dropDownArr{
+        height: 12px;
+        rotate: 90deg;
+        margin-left: 12%;
+        transition-duration: 1s;
+    }
+    .side-colour-Contain{
+        display: flex;
+        margin-top: 3px;
+        flex-direction: column;
+        background: radial-gradient(white, #00000012);
+        border-radius: 12px;
+        font-family: monospace;
+        padding: 3px;
+    }
+    .side-colour{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 2px;
+        align-items: center;
+    }
+
+    .colour{
+        background: #efefef;
+        border: 0;
+        height: 21px;
+        width: 21px;
+        padding: 0px;
+        border-radius: 2px;
+        box-shadow: 0 0 20px 0px #80808045;
+    }
+    .optionTitle{
+        font-size: 12px;
+        margin-top: 4px;
+        border-bottom-right-radius: 7px;
+        border-bottom-left-radius: 7px;
+        width: 80%;
+        padding: 2px;
+        background: #bebebe;
+        font-family: monospace;
+    }
+
+    @keyframes rotateCube {
+        from {
+            transform: rotateX(330deg) rotateY(45deg);
+        }
+
+        to {
+            transform: rotateX(330deg) rotateY(405deg);
+        }
+    }
+</style>
+<script>
+    cubes = document.getElementById("containDisplay")
+    var canChangeCubeVal = false;
+    var BoxOpen = false;
+    var newCube = false;
+    const valToColour = {
+        "W": "white",
+        "Y": "#ffff74",
+        "B": "rgb(64 64 246)",
+        "G": "#24c124",
+        "R": "#c40505",
+        "O": "orange",
+        "-": "#07366e",
+    };
+
+    
+    if (JSON.parse(localStorage.getItem('allCubes') == null)) {
+        localStorage.setItem('allCubes', JSON.stringify([]));
+    }
+    if (JSON.parse(localStorage.getItem('cubeOrder') == null)) {
+        var filler = []
+        for (var i = 0; i < JSON.parse(localStorage.getItem('allCubes')).length; i++) {
+            filler.push(i)
+        }
+        localStorage.setItem('cubeOrder', JSON.stringify(filler));
+    }
+    if (JSON.parse(localStorage.getItem('allIds') == null)) {
+        localStorage.setItem('allIds', JSON.stringify([]));
+    }
+
+
+    //when you click the option the corresponging check box gets checked
+    function SetOption(event,index){
+        if(event.target.classList[0]!="listItem"){return}
+        itemEl = document.getElementsByClassName("CBox")[index];
+        itemEl.checked = !itemEl.checked;    
+    }
+
+
+    //
+    function toggleSelect(mainCube){
+        const TutorialOptions = {
+            "block-out colours" : [true," black out pieces that are not relevent to the step"],
+            "timer" : [false,"time how long to solve the cube (ms will not be saved)"],
+            "animations": [true,"The cube animations can be canceled for faster movement"],
+            "sound" : [true,"toogle the movement sound effects"],
+        };
+
+        const defaultOptions = {
+            "scramble cube" : [true,"scramble cube when open"],
+            "play-mode" : [true,"the ability still use cube after solved"],
+            "animations": [true,"The cube animations can be canceled for faster movement"],
+            "timer" : [true,"time how long to solve the cube (ms will not be saved)"],
+            "sound" : [true,"toogle the movement sound effects"],
+        };
+
+        selectCol = "rgb(239 239 239)";
+        defaultCol = "rgb(190 190 190)";
+        tab1 = document.getElementById("tab1")
+        tab2 = document.getElementById("tab2")
+        content = document.getElementById("content")
+        content.innerHTML=""
+
+        //add in html
+        
+        //colours
+        content.innerHTML+='<div class="optionTitle">Custom Colors:</div> <div class="side-colour-Contain"> <div class="side-colour"> <div class="sideText"> Top </div> <div> <input class="colour" type="color" value="#ffffff"> </div> </div> <div class="side-colour"> <div class="sideText"> bottom </div> <div> <input class="colour" type="color" value="#ffff74"> </div> </div> <div class="side-colour"> <div class="sideText"> right </div> <div> <input class="colour" type="color" value="#4040f6"> </div> </div> <div class="side-colour"> <div class="sideText"> back-left </div> <div> <input class="colour" type="color" value="#24c124"> </div> </div> <div class="side-colour"> <div class="sideText"> left </div> <div> <input class="colour" type="color" value="#c40505"> </div> </div> <div class="side-colour"> <div class="sideText"> back-right </div> <div> <input class="colour" type="color" value="#ffa500"> </div> </div> </div>';
+        // Advanced Options
+        content.innerHTML+='<div class="optionTitle">Advanced Options:</div>'
+        // if the option is mainCube  
+        if(mainCube){
+            // show arrow 
+            document.getElementsByClassName("arrImg")[0].style.opacity="1"
+            document.getElementsByClassName("arrImg")[1].style.opacity="1"
+            canChangeCubeVal = true;
+            
+            tab1.style.background = selectCol;
+            tab2.style.background = defaultCol;
+            
+            count = 0
+            for (var key in defaultOptions) {
+                content.innerHTML += '<div onclick="SetOption(event,'+count+')" id="select-'+count+'"; class="listItem">'+key+'<input type="checkbox" class="CBox"></input> <div class="popUpInfo">'+defaultOptions[key][1]+'<div></div>';
+                if(defaultOptions[key][0]){
+                    document.getElementsByClassName("CBox")[count].setAttribute("checked",defaultOptions[key][0])
+                };
+                count++
+            }
+
+        // if the option is Tutorial  
+        }else{
+            //set the cube to 3
+            updateCubeDisplay(3)
+            changeCubeVal(true,3)
+            // hide arrow 
+            document.getElementsByClassName("arrImg")[0].style.opacity="0"
+            document.getElementsByClassName("arrImg")[1].style.opacity="0"
+            canChangeCubeVal = false
+
+            tab1.style.background = defaultCol;
+            tab2.style.background = selectCol;
+
+            count = 0
+            for (var key in TutorialOptions) {
+                content.innerHTML += '<div onclick="SetOption(event,'+count+')" id="select-'+count+'"; class="listItem">'+key+'<input type="checkbox" class="CBox"></input> <div class="popUpInfo">'+TutorialOptions[key][1]+'<div></div>';
+                if(TutorialOptions[key][0]){
+                    document.getElementsByClassName("CBox")[count].setAttribute("checked",TutorialOptions[key][0]);
+                }
+                count++
+                
+            }
+        }
+
+        /*
+        <div class="optionTitle">Custom Colors:</div>
+        <div class="side-colour-Contain">
+            <div class="side-colour">
+                <div class="sideText"> Top </div>
+                <div> <input class="colour" type="color" value="#ffffff"> </div> 
+            </div>
+            <div class="side-colour">
+                <div class="sideText"> bottom </div>
+                <div> <input class="colour" type="color" value="#ffff74"> </div> 
+            </div>
+            <div class="side-colour">
+                <div class="sideText"> right </div>
+                <div> <input class="colour" type="color" value="#4040f6"> </div> 
+            </div>
+            <div class="side-colour">
+                <div class="sideText"> back-left </div>
+                <div> <input class="colour" type="color" value="#24c124"> </div> 
+            </div>
+            <div class="side-colour">
+                <div class="sideText"> left </div>
+                <div> <input class="colour" type="color" value="#c40505"> </div> 
+            </div>
+            <div class="side-colour">
+                <div class="sideText"> back-right </div>
+                <div> <input class="colour" type="color" value="#ffa500"> </div> 
+            </div>
+        </div>
+
+        
+        */
+        
+    }
+
+    //localStorage.setItem('allCubes', JSON.stringify(allCubes));
+    function changeCubeVal(add,setfval){
+        currentSize = parseInt(document.getElementById("newCube-size").innerHTML.split("<")[0])
+        arrow = '<div class="innerAro">✖</div>'
+        if(setfval){
+            document.getElementById("newCube-size").innerHTML = setfval + arrow + setfval
+            return;
+        }
+        if(canChangeCubeVal==false){return}
+        if(add){
+            currentSize++
+            if(currentSize==10){alert("haveing a large cube may result in slow performance and overall longer load time.")};
+            document.getElementById("newCube-size").innerHTML = currentSize+arrow+currentSize
+        }else{
+            if(2<currentSize){currentSize--}
+            document.getElementById("newCube-size").innerHTML = currentSize+arrow+currentSize
+        }
+        updateCubeDisplay(currentSize);
+    }
+
+
+    //fill the "add cube" with a girid reflecing on the size slected 
+    function updateCubeDisplay(currentSize){
+        const sides = document.getElementsByClassName("displaySize")
+        for (var i = 0; i < sides.length; i++) {
+            sides[i].innerHTML=""
+            sides[i].style.gridTemplateColumns = "repeat("+currentSize+", 1fr)";
+            sides[i].style.gridTemplateRows    = "repeat("+currentSize+", 1fr)";
+            for (var j = 0; j < currentSize**2; j++) {
+                sides[i].innerHTML+= "<div class='displayPice'></div>";
+            }
+        }
+    }
+
+    function addCubes() {
+        BoxOpen = false
+        cubes.innerHTML = ""
+        var allCubes = JSON.parse(localStorage.getItem('allCubes'));
+        var orderClick = JSON.parse(localStorage.cubeOrder);
+
+        for (var i = 0; i < allCubes.length; i++) {
+            cubes.innerHTML += '<div class="cube-container" onclick="openCubeWindow(event,'+i+','+allCubes[orderClick[i]].id+')"><div class="cube" id="cube-'+orderClick[i]+'"><div class="face top"></div><div class="face bottom"></div><div class="face front"></div><div class="face back"></div><div class="face left"></div><div class="face right"></div></div><img class="ExtLinkImg" src="https://creazilla-store.fra1.digitaloceanspaces.com/icons/3202818/external-link-icon-sm.png"><img class="binImg" onClick="removeCube('+i+')" src="https://cdn2.iconfinder.com/data/icons/thin-line-color-1/21/33-512.png"><div class="prop"><div class="sizeC">'+allCubes[orderClick[i]].cubeSize+'x'+allCubes[orderClick[i]].cubeSize+'<div class="other"><div>'+convertTime(allCubes[orderClick[i]].timeSpent)+'</div></div></div></div></div>';
+
+            /*
+            html added for each cube:
+            '
+            <div class="cube-container" onclick="openCubeWindow(event,'+i+','+allCubes[orderClick[i]].id+')">
+                <div class="cube" id="cube-'+orderClick[i]+'">
+                    <div class="face top"></div>
+                    <div class="face bottom"></div>
+                    <div class="face front"></div>
+                    <div class="face back"></div>
+                    <div class="face left"></div>
+                    <div class="face right"></div>
+                </div>
+                <img class="ExtLinkImg" src="https://creazilla-store.fra1.digitaloceanspaces.com/icons/3202818/external-link-icon-sm.png">
+                <img class="binImg" onClick="removeCube('+i+')" src="https://cdn2.iconfinder.com/data/icons/thin-line-color-1/21/33-512.png">
+        
+                <div class="prop">
+                    <div class="sizeC">
+                    '+allCubes[orderClick[i]].cubeSize+'x'+allCubes[orderClick[i]].cubeSize+'
+                    <div class="other">
+                        <div>'+convertTime(allCubes[orderClick[i]].timeSpent)+'</div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            '
+            */
+            fillCube(allCubes[orderClick[i]].state, "cube-" + orderClick[i])
+            if(allCubes[orderClick[i]].solved){
+                document.getElementsByClassName("cube-container")[i].classList.add("solvedCube");
+                document.getElementsByClassName("prop")[i].classList.add("doneTime");   
+            }            
+            if(newCube == true && i == (allCubes.length-1)){
+                //add animation to last elent so it looks like the cube just got added 
+                document.getElementsByClassName("cube-container")[allCubes.length-1].style.opacity = "0";
+                setTimeout(() => {document.getElementsByClassName("cube-container")[allCubes.length-1].style.opacity = "1";},500);
+                newCube = false;
+            }
+        }
+        
+        cubes.innerHTML+='<div id="adding"> <div onclick="openBox()" class="addCon"> <div class="plusContain"> <div class="addR"></div> <div class="addL"> <div class="extra"> <div class="sizeBox"> <div onclick="changeCubeVal(false)" class="arrBox"><img src="https://cdn-icons-png.flaticon.com/512/271/271220.png" class="arrImg" alt=""></div> <div id="newCube-size" class="innerAro"> 3 <div class="innerAro" >✖</div> 3 </div> <div onclick="changeCubeVal(true)" class="arrBox arrR"><img src="https://cdn-icons-png.flaticon.com/512/271/271220.png" class="arrImg" alt=""></div> </div> <div class="containSelection"> <div class="selection"> <div class="tabs"> <div class="tab" id="tab1" onclick="toggleSelect(true)" > NxN cube </div> <div class="tab" id="tab2" onclick="toggleSelect(false)"> tutorial </div> </div> <div class="showSettings"; onclick="toggleoptions()"> moreOptions <img class="dropDownArr" src="https://static.thenounproject.com/png/634840-200.png"></img></div> <div id="content"> </div> </div> <div id="addBtn" onclick="submit()"> create </div> </div> </div> </div> </div> <div class="addCube"> <div class="face top displaySize"></div> <div class="face bottom displaySize"></div> <div class="face front displaySize"></div> <div class="face back displaySize"></div> <div class="face left displaySize"></div> <div class="face right displaySize"></div> </div> <div></div> </div> </div>';
+        updateCubeDisplay(3);
+        toggleSelect(true);
+        toggleoptions();
+        /*        
+        <div id="adding">
+            <div onclick="openBox()" class="addCon">
+                <div class="plusContain">
+                    <div class="addR"></div>
+                    <div class="addL">
+                        <div class="extra">
+                        <div class="sizeBox">
+                            <div onclick="changeCubeVal(false)" class="arrBox"><img src="https://cdn-icons-png.flaticon.com/512/271/271220.png" class="arrImg" alt=""></div>
+                            <div id="newCube-size" class="innerAro">
+                                3 
+                                <div class="innerAro" >✖</div>
+                                3
+                            </div>
+                            <div onclick="changeCubeVal(true)" class="arrBox arrR"><img src="https://cdn-icons-png.flaticon.com/512/271/271220.png" class="arrImg" alt=""></div>
+                        </div>
+                        <div class="containSelection">
+                            <div class="selection">
+                                <div class="tabs">
+                                    <div class="tab" id="tab1" onclick="toggleSelect(true)" > NxN cube </div>
+                                    <div class="tab" id="tab2" onclick="toggleSelect(false)"> tutorial </div>
+                                </div>
+                                <div class="showSettings active";onclick="toggleoptions()"> moreOptions <img class="dropDownArr" src="https://static.thenounproject.com/png/634840-200.png"></img></div>
+                                <div id="content">
+                                
+                                </div>
+                            </div>
+                            
+                            <div id="addBtn" onclick="submit()"> create </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="addCube">
+                    <div class="face top displaySize"></div>
+                    <div class="face bottom displaySize"></div>
+                    <div class="face front displaySize"></div>
+                    <div class="face back displaySize"></div>
+                    <div class="face left displaySize"></div>
+                    <div class="face right displaySize"></div>
+                </div>
+                <div></div>
+            </div>
+        </div>
+
+    */
+
+    }
+    
+    function toggleoptions(){
+        document.getElementsByClassName("showSettings")[0].classList.toggle("active");
+        if(document.getElementsByClassName("showSettings")[0].classList.contains("active")==true){
+            document.getElementsByClassName("addCon")[0].style.height="200px";
+            document.getElementById("addBtn").style.marginTop = "-100%"
+        }else{
+            document.getElementsByClassName("addCon")[0].style.height="300px";
+            document.getElementById("addBtn").style.marginTop = "6%"
+        }
+    }
+
+    function convertTime(timeInSeconds){
+        var hours = Math.floor(timeInSeconds / 3600)+"h ";
+        var minutes = Math.floor((timeInSeconds % 3600) / 60)+"m ";
+        var seconds = timeInSeconds % 60+"s ";
+
+        if( hours[0]  == 0 ){hours = ""};
+        if( minutes[0] == 0 ){minutes = ""};
+        
+        formatedTime = hours + minutes + seconds
+        return formatedTime;
+    }
+
+
+    function removeCube(index){
+
+        var orderArr = JSON.parse(localStorage.cubeOrder);
+        var allCubes = JSON.parse(localStorage.allCubes);
+        
+        const removedItem = orderArr[index]
+        const cubeElement = document.getElementsByClassName("cube-container")[index]
+        //cubeElement.style.transitionDelay   = "1s"
+        cubeElement.style.opacity           = "0"
+        setTimeout(()=>{
+            cubeElement.style.width         = "0px"
+            cubeElement.style.padding       = "0px"
+            cubeElement.style.margin        = "0px"
+        },500)
+
+        setTimeout(()=>{
+            //remove the cube
+            allCubes.splice(orderArr[index], 1);
+            orderArr.splice(index, 1)
+
+            // then shift left
+            for (let i = 0; i < orderArr.length; i++) {
+                console.log(removedItem,"<",orderArr[i],"?");
+                if(removedItem < orderArr[i]){
+                    orderArr[i] -= 1
+                }
+            }
+            
+            console.log(orderArr,"    after ");
+            console.log(allCubes,"    cubes");
+
+            localStorage.setItem('cubeOrder', JSON.stringify(orderArr));
+            localStorage.setItem('allCubes', JSON.stringify(allCubes));
+            addCubes()
+        },1000);
+    }
+
+    function openCubeWindow(event,index, id) {
+        // the elements overlap so make sure that the user is not clicking the delete button 
+        if(event.target.classList.contains("binImg")){return}
+
+        //move it to the start
+        var cubesArr = JSON.parse(localStorage.cubeOrder);
+        window.open("cube.html?cubeID=" + id, "_blank");
+        //swap order,ve from position and add
+        item = cubesArr[index]
+        cubesArr.splice(index, 1)
+        cubesArr.unshift(item)
+        localStorage.setItem('cubeOrder', JSON.stringify(cubesArr));
+        //update
+        addCubes()
+    }
+
+    function openBox() {
+        if (BoxOpen == false) {
+            document.getElementsByClassName("addCon")[0].classList.toggle("active");
+            BoxOpen = true;
+        }
+    }
+    function closeBox() {
+        if (BoxOpen == true) {
+            document.getElementsByClassName("addCon")[0].classList.toggle("active")
+            BoxOpen = false;
+        }
+    }
+    function submit() {
+        if (BoxOpen == false) { return }
+
+        cubeSize = parseInt(document.getElementById("newCube-size").innerHTML.split("<")[0]);
+        var allCubes = JSON.parse(localStorage.allCubes);
+
+        allCubes.push({
+            "state": populatecube(cubeSize),
+            "cubeSize": cubeSize,
+            "timeSpent": "0",
+            "id": generateID(),
+            "solved":false,
+            "doneScramble":false,
+        });
+
+        order = JSON.parse(localStorage.cubeOrder);
+        order.push(order.length);
+        localStorage.setItem('cubeOrder', JSON.stringify(order));
+        localStorage.setItem('allCubes', JSON.stringify(allCubes));
+        console.log(cubeSize)
+
+        newCube = true;
+        closeBox()
+        
+        document.getElementById("adding").style.marginLeft = "310px"
+        console.log(BoxOpen)
+        document.getElementsByClassName("addCon")[0].classList.toggle("active")
+        
+        setTimeout(()=>{
+            addCubes();             
+            BoxOpen = false;
+        },1000);
+
+        console.log(BoxOpen)
+    }
+
+    function generateID() {
+        allIds = JSON.parse(localStorage.allIds);
+        newId = 0;
+        while (allIds.includes(newId)) {
+            newId++;
+        }
+        allIds.push(newId)
+        localStorage.setItem('allIds', JSON.stringify(allIds));
+        return newId
+    }
+
+    function populatecube(cubeSize) {
+        //https://sentry.io/answers/how-can-i-create-a-two-dimensional-array-in-javascript/#:~:text=There%20are%2C%20broadly%20speaking%2C%20two,array%20to%20create%20nested%20arrays.
+        CubeStartArr = [[], [], [], [], [], []]
+        CodeForColour = ["W", "Y", "B", "G", "R", "O"]
+        for (var i = 0; i < 6; i++) {
+            let sideArray = Array(cubeSize).fill().map(() => Array(cubeSize).fill(CodeForColour[i]));
+            CubeStartArr[i] = sideArray;
+        }
+        return CubeStartArr;
+    }
+
+    function fillCube(colMap, cubeId) {
+        faceAll = document.getElementById(cubeId).getElementsByClassName("face")
+        cubeSize = colMap[0].length
+        piSize = 100 / cubeSize
+        row = 0
+        col = 0
+        for (let Si = 0; Si < 6; Si++) {
+            faceAll[Si].style.gridTemplateColumns = "repeat(auto-fill, " + 100 / cubeSize + "px)";
+            for (let pi = 0; pi < cubeSize ** 2; pi++) {
+                faceAll[Si].innerHTML += "<div class='cu' style='background:" + valToColour[colMap[Si][col][row]] + "; width:" + (piSize - 2) + "px ;height:" + (piSize - 2) + "px;'></div>"
+                row++
+                if ((pi + 1) % cubeSize == 0) {
+                    col += 1
+                    row = 0
+                }
+            }
+            row = 0
+            col = 0
+        }
+    }
+
+    addCubes();
+
+
+
+</script>

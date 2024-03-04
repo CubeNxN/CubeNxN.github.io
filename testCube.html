@@ -1,0 +1,1613 @@
+<body id="bod">
+  <insertBar></insertBar>
+  <link rel="stylesheet" href="menuBar.css">
+  <script src="menuBar.js"></script>
+  
+  <div id="game">
+    
+
+    <div class="container" style="display: contents;">
+      <div id="miniMap" class="cube">
+        <!--
+          mini  map 
+        -->
+      </div>
+    </div>
+
+
+    <div class="container">
+      
+      <div id="cube" class="cube" style="transform: rotatex(55deg)rotateZ(45deg)rotateX(0deg);">
+        <!--
+        cube 
+        -->
+      </div>
+    </div>
+  </div>  
+    
+</body>
+  
+  <style>
+  
+  body {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 0;
+    background: radial-gradient(#ffffff00, #959595);
+    height: 100vh;
+  }
+  .contain-time{
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    width: 100%;
+    height: auto;
+  }
+  .noCubeBox{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    border: 4px solid #9292921f;
+    transition-duration: 0.5s;
+    border-radius: 12px;
+    padding: 56px;
+    font-size: 2em;
+    color: #ff8282;
+    font-family: monospace;
+    background: linear-gradient(45deg, #eaeaea, #ffffff);
+  }
+  
+  .link{
+    font-size: 0.8em;
+  }
+
+  .link:hover{
+    text-decoration-line: underline;
+  }
+
+
+  #game{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-content: center;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  #setUp{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: red;
+  
+  }
+  .sq{
+    position: absolute !important;
+    transition-duration: 0.3s; /*0.7s*/
+    top: -1px;
+    text-align: center;
+    display: flex;
+    bottom: -1px;
+    left: -1px;
+    right: -1px;
+    border-radius: 13%;
+    border: 1px solid #000;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+  }
+  .sq:hover{
+    background-color: red;
+    
+  }
+  
+  /* .sq:hover>div{
+    background-color: rgba(0, 0, 0, 0.322) !important;
+    height: 100%;
+    width: 100%;
+  } */
+  
+  .top{
+    position: absolute;
+    top: 100%;
+  }
+  .topOn{
+    position: absolute;
+    top: 100%;
+    height: 100%;
+    width: 100%;
+    background:repeating-radial-gradient(black, transparent 100px) ;
+
+  }
+  .outer{
+    position: absolute;
+    align-self: center;
+    width: 60px;
+    height: 60px;
+  }
+  .bottom{
+    position: absolute;
+    bottom: 100%;
+  }
+  .bottomOn{
+    position: absolute;
+    bottom: 100%;
+    height: 100%;
+    width: 100%;
+    background:repeating-radial-gradient(black, transparent 100px) ;
+
+  }
+  .left{
+    position: absolute;
+    left: 100%;
+  }
+  .leftOn{
+    position: absolute;
+    left: 100%;
+    height: 100%;
+    width: 100%;
+    background:repeating-radial-gradient(black, transparent 100px) ;
+
+  }
+  .right{
+    position: absolute;
+    right: 100%;
+  }
+  .rightOn{
+    position: absolute;
+    right: 100%;
+    height: 100%;
+    width: 100%;
+    background:repeating-radial-gradient(black, transparent 100px) ;
+  }
+
+  .container {
+    perspective: 1000px;
+    perspective-origin: 50% 50%;
+  }
+  #miniMap{
+    height: 100px;
+    width: 100px;  
+    position: absolute;
+    right: 50px;
+    top: 50px;
+
+    display: flex;
+    align-content: center;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .miniMapSide{
+    transition-duration: 0.7s;
+    background-color: #a6a6a6;
+    border: 1px solid #fff;
+    position: absolute;
+    display: flex;
+    width: 100px;
+    height: 100px;
+    align-content: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    opacity: 0;
+  }
+  .cube {
+    transform: rotateX(55deg) rotateZ(45deg);
+    transition-duration: 0.7s;
+    position: relative;
+    width: 350px;
+    height: 350px;
+    transform-style: preserve-3d;
+    transition-duration: 0.7s;
+  }
+  #cube > div {
+    position: absolute;
+    width: 350px;
+    height: 350px;
+    opacity: 0.99;
+  }  
+
+  .side{
+    top: -1px;
+    bottom: -1px;
+    left: -1px;
+    right: -1px;
+    border-radius: 2px;
+    background: #000000e8;
+    border: 1px solid #000000e8;
+  }
+  .spinface{
+    background:#00000000;
+    transition-duration: 0.3s;
+    pointer-events: none;/*this makes it not block the cube piece*/
+    transform: translate3d(0px, 0px, 176px);
+  }
+  .dark{
+    background:#00000032;
+    transition-duration: 0.3s;
+    pointer-events: none;/*this makes it not block the cube piece*/
+    transform: translate3d(0px, 0px, 176px);
+  }
+  .speedy{
+    transition-duration: 0.03s;
+  }
+  .noBorder{
+    border:1px solid rgba(255, 255, 255, 0)
+  }
+  @keyframes rotate {
+    100% {
+      transform: rotateX(0deg) rotateY(360deg) rotateZ(360deg);
+    }
+  }
+  
+</style>
+  
+<script>
+
+    var side=document.getElementsByTagName("side");
+    var cube=document.getElementById("cube");
+    var cubeArr = [];
+
+    var mouseDownXY = [];
+    var mouseUpXY = [];
+    var sideMove = "";
+    var trlMove = "";
+
+    var touch = true;
+    var sizeOfCube = 0;
+
+    var isDragging = false
+    var originalDragPos = [0 , 0]
+    const cubeLen = 350
+
+    //what cube from the to generate
+    allCubeProp = JSON.parse(localStorage.allCubes);
+    allids = [];
+
+    for(let i = 0; i<allCubeProp.length;i++){
+      allids.push(allCubeProp[i].id)
+    }
+
+    //get the cube with the id 
+    const cubeIndex = allids.indexOf(parseInt(new URL(document.location).searchParams.get("cubeIndex")))
+    
+    //colours=["white","yellow","blue","green","red","orange"]
+    valToColour = {
+      "W":"white",
+      "Y":"#ffff74",
+      "B":"rgb(64 64 246)",
+      "G":"#24c124",
+      "R":"#c40505",
+      "O":"orange",
+      "-":"#5c5c5c70"
+    };
+    
+    sides = ["top","bottom","right","back-left","left","back-right"];
+
+
+    active = false;
+    document.addEventListener('visibilitychange', (event)=>{
+      if(document.hidden){
+        active = true;
+      }else{
+        active = false;
+      }
+    });
+
+    class CubeMovement{
+      constructor(){
+        this.side = 'side'
+        
+      }
+      spinside(){
+      const  delayForSwap = parseFloat(getComputedStyle(document.getElementsByClassName("spinface")[sides.indexOf("top")]).transitionDuration.replace("s",""))*1000
+        //all for show
+        var row=0
+        var col=0
+        originalTransformations = Array(cubeSize).fill(0).map(() => new Array(cubeSize).fill(" "));
+        originalTrl =             Array(cubeSize).fill(0).map(() => new Array(cubeSize).fill(" "));
+        originalMouseDowns =      Array(cubeSize).fill(0).map(() => new Array(cubeSize).fill(" "));
+        originalTouchDowns =      Array(cubeSize).fill(0).map(() => new Array(cubeSize).fill(" "));
+
+        for(var i=0;i<cubeSize**2;i++){
+          document.getElementsByClassName("spinface")[sides.indexOf(side)].appendChild(document.getElementById(side+(i+1)));
+
+          transformation = (document.getElementById(side+(i+1)).style.transform).split(" ");
+          //console.log(transformation.join(" "),"getting from",side+(i+1))
+          document.getElementById(side+(i+1)).style.transform = transformation.slice(-2,transformation.length).join(" ");
+          originalTransformations[row][col] = transformation.join(" ");
+
+          originalTrl[row][col] = document.getElementById(side+(i+1)).getAttribute("trl");
+          originalMouseDowns[row][col] = document.getElementById(side+(i+1)).getAttribute("onmousedown");
+          originalTouchDowns[row][col] = document.getElementById(side+(i+1)).getAttribute("ontouchstart");
+          
+          col++;
+          if((i + 1)%cubeSize == 0){
+            col = 0;
+            row++;
+          }
+        }
+
+        if(dir){
+          document.getElementsByClassName("spinface")[sides.indexOf(side)].style.transform+= " rotate(90deg)"
+        }else{
+          document.getElementsByClassName("spinface")[sides.indexOf(side)].style.transform+= " rotate(-90deg)"
+        }
+        touch = false
+        // TEST BELOW 
+
+        //DELETE
+        console.log(originalTransformations[0][0],"b4");
+
+        // once the side has spun, remove it from the div then acualy roate the pice 
+        setTimeout(function() {
+          for(var i=0;i<cubeSize**2;i++){
+          //swap bring it back to the main cube 
+          document.getElementById("cube").appendChild(document.getElementById(side+(i+1)))
+          }
+
+          ogIds=[]
+          
+          count=0
+          for(var i=0;i<cubeSize;i++){
+            rowid=[]
+            for(var j=0; j<cubeSize; j++){
+              rowid.push(document.getElementById(side+(count+1)).id)
+              count++
+            }
+            ogIds.push(rowid)
+          }
+
+          if(dir){
+            rotateTransformations = spinSideArr(spinSideArr(spinSideArr(originalTransformations)));
+            rotateTrl             = spinSideArr(spinSideArr(spinSideArr(originalTrl)));
+            ogIds                 = spinSideArr(spinSideArr(spinSideArr(ogIds)));
+            mouseDowns            = spinSideArr(spinSideArr(spinSideArr(originalMouseDowns)));
+            touchDowns            = spinSideArr(spinSideArr(spinSideArr(originalTouchDowns)));
+          }else{
+            rotateTransformations = spinSideArr(originalTransformations);
+            rotateTrl             = spinSideArr(originalTrl);
+            ogIds                 = spinSideArr(ogIds);
+            mouseDowns            = spinSideArr(originalMouseDowns);
+            touchDowns            = spinSideArr(originalTouchDowns);
+          }
+          ElementList=[]
+          row=0
+          col=0
+          
+          for(var i=0;i<cubeSize**2;i++){
+            //swap bring it back to the main cube   COMMENT OUT BELOW FOR TEST
+            //document.getElementById("cube").appendChild(document.getElementById(side+(i+1)))
+            //swap the "trl" and Transformation
+            console.log((side+(i+1)))
+            document.getElementById(side+(i+1)).style.transform = rotateTransformations[row][col];
+            document.getElementById(side+(i+1)).classList.add(ogIds[row][col]);
+            setAttributes(document.getElementById(side+(i+1)),{
+              "trl":          rotateTrl[row][col],
+              "onmousedown":  mouseDowns[row][col],
+              "ontouchstart": touchDowns[row][col],
+            });
+            ElementList.push(document.getElementById(side+(i+1)))       
+
+            //document.getElementById(side+(i+1)).id="-"
+            col++
+            if((i+1)%cubeSize==0){
+              col=0
+              row++
+            }
+          }
+          //console.log((side + (i + 1)))
+          //console.log("Class list:", document.getElementById(side + (i + 1)).classList.value);
+          for(var i=0;i<ElementList.length;i++){
+            const listOfclass = ElementList[i].classList.value.split(" ");
+            ElementList[i].id = listOfclass[listOfclass.length-1];  //set the id added 
+            ElementList[i].classList.remove(listOfclass[listOfclass.length-1]); // remove the id from the classlist 
+          }
+          
+          //console.log("Class list:", document.getElementById(side + (i + 1)).classList.value);
+          // listOfclass = ElementList[i].classList.value.split(" ");
+          // console.log("Class list after removal:", listOfclass);
+          
+          //TEST
+          //document.getElementsByClassName("spinface")[sides.indexOf(side)].style.display = "none"
+          
+          
+          //get the transformation of the div that spins it and remove the last transformation (the +/- rotate 90 deg)   
+          spinFace = document.getElementsByClassName("spinface")[sides.indexOf(side)].style.transform
+          faceRotated = spinFace.split(" ")
+          document.getElementsByClassName("spinface")[sides.indexOf(side)].style.transform = faceRotated.slice(0,faceRotated.length-1).join(" ")
+          touch = true
+          
+          //DELETE
+          console.log(originalTransformations[0][0],"after");
+
+        },delayForSwap)
+      }
+
+      movePi(size,side,num,direction,save){
+        const map = getMapArray(size)
+        num = num.split("|")
+        var sideIndex = 0;
+        var dir = 0;
+        const delayForSwap = parseFloat(getComputedStyle(document.getElementsByClassName("spinface")[sides.indexOf("top")]).transitionDuration.replace("s",""))*1000
+
+        switch(side){
+          case "top":     //(0th side)
+            //num[0] turnPi
+            sideIndex = 0;
+            var turnPi = getNumbersToSwap(map[0], parseInt(num[sideIndex]), direction, sideIndex, side)
+            var sidesTurn = SideTurning(side,map[0],num,direction,sideIndex)
+            if(direction=="up"||direction=="bottom"){
+              dir=0
+            }else if(direction=="left"||direction=="right"){
+              dir=1
+            }
+            //sidesMove,sideSpin= getSides(direction,inner)
+            
+            break;
+          case "right":   //(2th side)
+            //num[1]
+            sideIndex = 1;
+            var turnPi = getNumbersToSwap(map[2],parseInt(num[sideIndex]),direction,sideIndex,side)
+            var sidesTurn = SideTurning(side,map[2],num,direction,sideIndex)
+            if(direction=="up"||direction=="bottom"){
+              dir = 0
+            }else if(direction=="left" || direction=="right"){
+              dir = 1
+            }
+
+            break;
+          case "left":   //(4th side)
+            //num[2]
+            sideIndex = 2;
+            var turnPi = getNumbersToSwap(map[3],parseInt(num[sideIndex]), direction, sideIndex, side);
+            var sidesTurn = SideTurning(side,map[3],num,direction,sideIndex);
+
+            if(direction=="up" || direction=="bottom"){
+              dir = 1;
+            }else if(direction=="left" || direction=="right"){
+              dir = 0;
+            }
+            break;
+        }
+        const sideTurnOfset= [sidesTurn[3],sidesTurn[0],sidesTurn[1],sidesTurn[2]];
+        
+        //get the ids needed to swap   
+        var ids = [];
+        for(var i=0; i<sidesTurn.length; i++){
+          ids.push(getIDofNum(size,sidesTurn[i],turnPi,sideIndex,dir))//push an array of ids 
+        }
+        const idsOfset = [ids[3],ids[0],ids[1],ids[2]];
+        // all for show
+        for(var pi=0;pi<ids.length;pi++){
+          for(var i=0;i<ids[pi].length;i++){
+            //elm=document.getElementById(ids[pi][i])
+            //transform-origin =
+            // console.log(elm.style.transform,"b4",ids[pi][i])
+            // document.getElementsByClassName("spinface")[sides.indexOf(sidesTurn[pi])].appendChild(elm)
+
+            // transformation = (elm.style.transform).split(" ");
+
+            // elm.style.transform=transformation.slice(-2,transformation.length).join(" ");
+
+
+            // document.getElementsByClassName("spinface")[sides.indexOf(sidesTurn[pi])].appendChild(document.getElementById(ids[pi][i]));
+            // transformation = (document.getElementById(ids[pi][i]).style.transform).split(" ");
+            // document.getElementById(ids[pi][i]).style.transform = transformation.slice(-2,transformation.length).join(" ");
+          }
+        }
+        
+        // setTimeout(function() {// rotate it now fr fr fr fr 
+          
+          //remove from the spin face 
+
+          
+          //gett all the things to swap 
+          var transformations=[]
+          var trls=[]
+          var ogIds=[]
+          var mouseDowns=[]
+          var touchDowns=[]
+          
+          for(var pi=0;pi<ids.length;pi++){
+            for(var i=0;i<ids[pi].length;i++){
+              transformations.push(document.getElementById(ids[pi][i]).style.transform)
+              trls.push(document.getElementById(ids[pi][i]).getAttribute("trl"));
+              ogIds.push(document.getElementById(ids[pi][i]).id);
+              mouseDowns.push(document.getElementById(ids[pi][i]).getAttribute("onmousedown"));
+              touchDowns.push(document.getElementById(ids[pi][i]).getAttribute("ontouchstart"));
+            }
+          }
+
+          var classToId = [];
+          var count = 0;
+          //for(var Si=0;Si<4;Si++){
+          var ElementList=[];
+
+          for(var pi=0;pi<ids.length;pi++){
+            for(var i=0;i<ids[pi].length;i++){
+              document.getElementById(idsOfset[pi][i]).style.transform = transformations[count];
+              setAttributes(document.getElementById(idsOfset[pi][i]),{
+                "trl":          trls[count],
+                "onmousedown":  mouseDowns[count],
+                "ontouchstart": touchDowns[count],
+              });
+              ElementList.push(document.getElementById(idsOfset[pi][i]));
+              document.getElementById(idsOfset[pi][i]).classList.add(ogIds[count]);
+              classToId.push(ogIds[count]);
+              count++
+            }        
+          }
+          console.log(ElementList)
+          for(var i=0;i<ElementList.length;i++){
+            const listOfclass = ElementList[i].classList.value.split(" ");
+            ElementList[i].id = listOfclass[listOfclass.length-1];
+            console.log(ElementList[i].id)
+            ElementList[i].classList.remove(listOfclass[listOfclass.length-1]);
+          }
+
+        // },delayForSwap)
+        if(save){
+          //wait for the move to be made to save it
+          setTimeout(function(){saveCube()}, delayForSwap+100)
+        }
+      }
+    }
+
+    var ms = 0;
+    function addToTime(){
+      if(active){return};
+      el = document.getElementById("timer")
+      allCubePropcubeProp = JSON.parse(localStorage.allCubes);
+      el.innerHTML = parseInt(allCubePropcubeProp[cubeIndex].timeSpent)+ms
+      ms+=1
+      if(ms>=1000){addSeconds()}
+    }
+    function addSeconds(){
+      allCubePropcubeProp = JSON.parse(localStorage.allCubes);
+      allCubePropcubeProp[cubeIndex].timeSpent = parseInt(allCubePropcubeProp[cubeIndex].timeSpent) + 1
+      localStorage.setItem('allCubes', JSON.stringify(allCubePropcubeProp));
+      ms = 0;
+    }
+
+    function toggleView(view){
+      sideEl=document.getElementById("miniMap").getElementsByClassName("miniMapSide")
+      for(var i=0;i< sideEl.length; i++){
+        if(view){
+          sideEl[i].style.opacity = 1;
+        }else{
+          sideEl[i].style.opacity = 0;
+        }
+      }
+    }
+
+    function addPlayerInput(){
+      document.getElementById("game").addEventListener("mousedown", (event) => {
+        // make it so that the curser is always the same 
+        event.preventDefault();
+        if (event.button === 2) {
+          isDragging      = true;
+          originalDragPos = [event.clientX,event.clientY];
+          document
+          toggleView(true)
+        }
+      });
+      
+      document.getElementById("game").addEventListener("touchstart", (event) => {
+        if (event.target.id=="game") {
+          isDragging = true;
+          originalDragPos = [event.changedTouches[0].clientX,event.changedTouches[0].clientY];
+          toggleView(true)
+        }
+      });
+
+      document.addEventListener('contextmenu', (event) => {
+        event.preventDefault();
+      });
+
+      document.addEventListener('mousemove', (event) => {
+        draging(event,true);
+      });
+
+      document.addEventListener('touchmove', (event) => {
+        draging(event,false);
+      }); 
+      
+      // set the mouse Up X and Y
+      document.addEventListener("mouseup", (event) => {
+        playerMovement(event,true)
+        toggleView(false)
+      });
+
+      document.addEventListener("touchend", (event) => {
+        playerMovement(event,false)
+        toggleView(false)
+      });
+    }
+
+
+    function playerMovement(event,mouse){
+      //event.preventDefault();
+      //reset cube pos after drag
+      isDragging = false;
+      document.getElementById("cube").style.transform = "rotateX(55deg) rotateZ(45deg)";    
+      document.getElementById("cube").style.transitionDuration = ".7s";
+      document.getElementById("miniMap").style.transitionDuration = ".7s";
+      document.getElementById("miniMap").style.transform = document.getElementById("cube").style.transform;
+
+      if(mouse){
+        mouseUpXY = [event.clientX,event.clientY];
+      }else{
+        const touchEv = event.changedTouches[0];
+        mouseUpXY = [event.changedTouches[0].clientX , event.changedTouches[0].clientY];
+      }
+
+
+      len = Math.sqrt((mouseUpXY[1] - mouseDownXY[1])**2 + (mouseUpXY[0] - mouseDownXY[0])**2);
+
+      if(len < 620 && len > 20 ){
+        direction = getDirection()
+      }else{
+        direction = undefined
+      }
+
+      console.log(mouseUpXY)
+      console.log(mouseDownXY)
+      if(touch && direction!=undefined && trlMove!=undefined){
+        if(mouse==false){
+          move(sizeOfCube, sideMove, trlMove, direction, true)
+        }else if (event.button === 0) {
+          move(sizeOfCube, sideMove, trlMove, direction, true)
+        }
+      }
+      //mouseDownXY = mouseUpXY
+      trlMove = undefined
+    };
+    
+
+    function draging(event,mouse){
+      if(isDragging){
+        MovementSpeed = 1/6;
+
+        if(mouse){
+          x = event.clientX;
+          y = event.clientY;
+        }else{
+          x = event.changedTouches[0].clientX;
+          y = event.changedTouches[0].clientY;
+        }
+
+        const moveLenX = (x - originalDragPos[0]) * MovementSpeed;
+        const moveLenY = (y - originalDragPos[1]) * MovementSpeed;
+
+        //offset
+        var rotateX = 55 - moveLenY; 
+        var rotateZ = 45 - moveLenX;
+        
+        //console.log(moveLenY,moveLenX)
+        document.getElementById("cube").style.transform = "rotateX("+(rotateX)+"deg) rotateZ("+(rotateZ)+"deg) ";
+        document.body.style.cursor = 'grab';
+        document.getElementById("cube").style.transitionDuration="0s"
+        document.getElementById("miniMap").style.transitionDuration="0s"
+        document.getElementById("miniMap").style.transform = document.getElementById("cube").style.transform;
+
+      }else{
+        document.body.style.cursor = 'unset';
+      }
+    }
+
+
+    function getDirection(){
+      // get the angle and make it so that 
+      gradient = (mouseUpXY[1] - mouseDownXY[1]) / (mouseUpXY[0] - mouseDownXY[0]);
+      angRaid = Math.atan(gradient);
+      if (angRaid < 0) {
+        angRaid += Math.PI;//make the -90 to 0 positive 
+      }
+      if(mouseUpXY[1] > mouseDownXY[1]){// the gradient can be the same so add 180 
+        angRaid += Math.PI;
+      }
+      ang = angRaid*180/Math.PI;//convert to deg
+      
+      switch(sideMove){
+        case "top":
+          directoins=[150,30,150+180,30+180];
+          closestDeg = closestTo(ang,directoins);
+          if(closestDeg==directoins[0]){  
+            return "up";
+          }else if(closestDeg==directoins[1]){  
+            return "left";
+          }else if(closestDeg==directoins[2]){  
+            return "bottom";
+          }else if(closestDeg==directoins[3]){  
+            return "right";
+          }
+        break;
+        case "right":
+          
+          directoins=[90,150+180,90+180,150];
+          closestDeg = closestTo(ang,directoins);
+
+          if(closestDeg==directoins[0]){  
+            return "up";
+          }else if(closestDeg==directoins[1]){  
+            return "left";
+          }else if(closestDeg==directoins[2]){  
+            return "bottom";
+          }else if(closestDeg==directoins[3]){  
+            return "right";
+          }
+        break;
+        case "left":
+          directoins = [90,30,90+180,30+180];
+          closestDeg = closestTo(ang,directoins);
+
+          if(closestDeg==directoins[0]){  
+            return "up";
+          }else if(closestDeg==directoins[1]){  
+            return "left";
+          }else if(closestDeg==directoins[2]){  
+            return "bottom";
+          }else if(closestDeg==directoins[3]){  
+            return "right";
+          }
+        break;
+      }
+    }
+
+
+    function closestTo(num,arr){
+      copyArr = arr.slice();
+
+      while(copyArr.length > 1){
+        if(Math.abs(num - copyArr[0]) < Math.abs(num - copyArr[1])){
+          copyArr.splice(1,1);
+        }else{
+          copyArr.splice(0,1);
+        }
+      }
+      return copyArr[0];
+    }
+
+
+    function setVeribals(side,number,mouse){
+      //console.log(side,number);
+      if(mouse){
+        mouseDownXY = [event.clientX,event.clientY];
+      }else{
+        mouseDownXY = [event.changedTouches[0].clientX , event.changedTouches[0].clientY];
+      }      
+      sideMove = side;
+      trlMove  = number;
+    }
+
+
+    //NOT IN USE 
+    function turnArray(){
+      Arr=[[],[],[],[],[],[]] 
+      CodeForColour=["W","Y","B","G","R","O"]
+      for(var i =0;i<6;i++){
+        let my2DArray = Array(cubeSize).fill().map(() => Array(cubeSize).fill(CodeForColour[i]));
+        Arr[i] = my2DArray;
+      } 
+
+      return(
+        [
+          [//side1
+            [[],[],[]],
+            [[],[],[]],
+            [[],[],[]],
+          ],
+          [//side2
+
+          ],
+          [//side3
+
+          ],
+          [//side4
+
+          ],
+          [//side5
+
+          ],
+          [//side6
+
+          ],
+        ]
+      ) 
+
+    }
+
+
+  function merge(...arr){
+    // new array with the same parremetors
+    const mergeArray = Array(arr[0].length).fill([]).map(() => Array(arr[0].length).fill([]))
+     
+    for(var i=0;i < arr[0].length;i++){
+      for(var j=0;j < arr[0][i].length;j++){        
+        mergeArray[i][j] = []
+        for(let item = 0; item < arr.length; item++){
+          mergeArray[i][j].push(arr[item][i][j])
+        }
+      }
+    }
+    return mergeArray;
+  }
+
+
+  function getMapArray(size) {
+    const resultArray = [];
+    const twoDArray = [];
+    var rowArr = [];
+
+    for(var Si=0;Si<6;Si++){
+      const numberedMatrix = [];
+      var count = 1
+
+      for(var i=0;i<size;i++){ //for each row  
+        rowArr=[]
+
+        for(var j=0;j<size;j++){
+          rowArr.push(count)
+          count++
+        }
+        numberedMatrix.push(rowArr)
+      }
+      switch(Si){
+        case 0:   //top
+          resultArray.push(merge(numberedMatrix, numberedMatrix, spinSideArr(spinSideArr(spinSideArr(numberedMatrix)))))
+          break;
+        case 1:   //bottom 
+          resultArray.push(merge(merge(numberedMatrix,spinSideArr(spinSideArr(numberedMatrix))), spinSideArr(spinSideArr(numberedMatrix)), spinSideArr(spinSideArr(spinSideArr(numberedMatrix)))))
+          break;
+        case 2:   // right
+          resultArray.push(merge(numberedMatrix, numberedMatrix, numberedMatrix))
+          break;
+        case 3:   // back-left
+          resultArray.push(merge(numberedMatrix ,merge(numberedMatrix,spinSideArr(spinSideArr(numberedMatrix))), spinSideArr(spinSideArr(numberedMatrix))))
+          break;
+        case 4:   // left
+          resultArray.push(merge(numberedMatrix, spinSideArr(spinSideArr(spinSideArr(numberedMatrix))), spinSideArr(spinSideArr(spinSideArr(numberedMatrix)))))
+          break;
+        case 5:   // back-right
+          resultArray.push(merge(numberedMatrix, spinSideArr(numberedMatrix),merge(spinSideArr(numberedMatrix), spinSideArr(spinSideArr(spinSideArr(numberedMatrix))))))
+          break;
+      }
+    }
+
+    return resultArray;
+  }
+
+
+  //https://stackoverflow.com/questions/12274748/setting-multiple-attributes-for-an-element-at-once-with-javascript
+  function setAttributes(el, attrs) {
+    for(var key in attrs) {
+      el.setAttribute(key, attrs[key]);
+    }
+  }
+
+  function getSideLocation(sidesLen,ofset){
+    offsetFromOrigen=sidesLen/2
+    if(ofset){
+      return[
+      "translate3d(0px, 0px, "+offsetFromOrigen+"px)",                                                                                          //top
+      "rotateY(180deg) translate3d(0px, "+boxSize*(sizeCube-1)+"px, "+offsetFromOrigen+"px) rotate(180deg)",                                    //bottom
+      "rotateY(90deg) translate3d("+(-boxSize*(sizeCube-1)/2)+"px, 0px, "+(offsetFromOrigen+boxSize*(sizeCube-1)/2)+"px)",                  //right
+      "rotateY(-90deg) translate3d("+(-boxSize*(sizeCube-1)/2)+"px, 0px, "+(offsetFromOrigen-boxSize*(sizeCube-1)/2)+"px)"  ,               //back-left
+      "rotateX(-90deg) translate3d(0px, "+(-boxSize*(sizeCube-1)/2)+"px, "+(offsetFromOrigen+boxSize*(sizeCube-1)/2)+"px) ",                 //left
+      "rotateX(90deg) translate3d("+(boxSize*0)+"px,"+(-boxSize*(sizeCube-1)/2)+"px,"+(offsetFromOrigen-boxSize*(sizeCube-1)/2)+"px)",      //back-right
+      ];
+    }else{
+      return[
+      "translate3d(0px, 0px, "+offsetFromOrigen+"px)",                                 //top
+      "rotateY(180deg) translate3d(0px, 0px, "+offsetFromOrigen+"px) rotate(180deg)",  //bottom
+      "rotateY(90deg) translate3d(0px, 0px, "+offsetFromOrigen+"px)",                  //right
+      "rotateY(-90deg) translate3d(0px, 0px, "+offsetFromOrigen+"px)"  ,               //back-left
+      "rotateX(-90deg) translate3d(0px, 0px, "+offsetFromOrigen+"px) rotate(0deg)",    //left
+      "rotateX(90deg) translateZ("+offsetFromOrigen+"px)",                             //back-right
+      ];
+    }
+  }
+  function generateCube(CubeColArr){
+    sizeCube = CubeColArr[0][0].length;
+
+    boxSize = (cubeLen/sizeCube);
+    
+    document.getElementsByTagName('style')[0].innerHTML += '.cu{height:'+boxSize+'px !important; width:'+boxSize+'px !important ;} ';
+
+    const sideLocation      = getSideLocation(cubeLen, true);
+    const sideLocationnNoff = getSideLocation(cubeLen, false);
+    const minimapLocation   = getSideLocation(100, false);
+
+    // add the xy locations for the piece
+    locations = [];
+    X = 0;
+    Y = 0;
+
+    for(var i = 0; i < sizeCube; i++){
+      for(var j = 0;j < sizeCube; j++){
+        locations.push("translateX("+X+"px)");
+        X+=boxSize;
+      }
+    X=0
+    }
+
+    lis=[]
+    for(var i=0;i<sizeCube;i++){
+      for(var j=0;j<sizeCube;j++){
+          lis.push("translateY("+Y+"px)");
+      }
+      Y += boxSize;
+    }
+    for(var i=0;i<locations.length;i++){
+      locations[i]+=" "+lis[i]
+    }
+
+    map = getMapArray(sizeCube)
+    
+    //make each side/piece 
+    row = 0;
+    col = 0;
+    count = 0;
+    movementClasses=["top","bottom","left","right"]
+    
+    cube.innerHTML=""
+    document.getElementById("miniMap").innerHTML=""
+    for(var Si=0;Si<6;Si++){//add 6 rotation divs and make mini map
+      cube.innerHTML += "<div class='spinface' style='width:"+cubeLen+" ;height:"+cubeLen+"; transform:"+sideLocationnNoff[Si]+"''></div>"
+      //cube.innerHTML += "<div class='dark' style='width:"+(cubeLen)+" ;height:"+(cubeLen)+"; transform:"+sideLocationnNoff[Si]+"''></div>"
+      document.getElementById("miniMap").innerHTML += "<div class='miniMapSide' style =' transform:"+minimapLocation[Si]+"'> <div style='transform:"+ "rotate(45deg)" +"'>"+sides[Si]+"</div> </div>"
+    }
+
+    for(var Si=0;Si<6;Si++){//6
+      for(var i=0;i<sizeCube**2;i++){// piece   
+
+        var trl = "";
+        if( map[Si][row][col].length == undefined){
+          trl = map[Si][row][col];
+        }else{// join the array with |   map[Si][row][col][0] map[Si][row][col][1]
+          trl = map[Si][row][col].join("|");
+        }
+        
+        cube.innerHTML += '<div trl="'+trl+'" ogCol='+CubeColArr[Si][col][row]+' style="  background:'+valToColour[CubeColArr[Si][col][row]] +'; transform: '+sideLocation[Si] +locations[i] +';  "  '+ 'class="sq  cu "'  +  '  id="'+(sides[Si])+(i+1)+'" > </div>'
+        if(CubeColArr[Si][col][row]=="-"){
+          document.getElementById(sides[Si]+(i+1)).classList.add("noBorder")
+        }
+
+        setAttributes(document.getElementById(sides[Si]+(i+1)),{
+          "onmousedown":'setVeribals(\"'+sides[Si]+'\",\"'+trl +'\",true)',
+          "ontouchstart":'setVeribals(\"'+sides[Si]+'\",\"'+trl +'\",false)',
+        });
+        
+        row++
+        count++
+        if((i+1) % sizeCube == 0){
+          col+=1
+          row=0
+        }
+      }
+      row=0
+      col=0
+    }
+  }
+
+
+  // NOT IN USE
+  function populatecube(cubeSize){
+    //https://sentry.io/answers/how-can-i-create-a-two-dimensional-array-in-javascript/#:~:text=There%20are%2C%20broadly%20speaking%2C%20two,array%20to%20create%20nested%20arrays.
+    Arr=[[],[],[],[],[],[]] 
+    CodeForColour=["W","Y","B","G","R","O"]
+    for(var i =0;i<6;i++){
+      let my2DArray = Array(cubeSize).fill().map(() => Array(cubeSize).fill(CodeForColour[i]));
+      Arr[i] = my2DArray;
+    } 
+    return Arr;
+  }
+
+  
+  //
+  function readCube(sizeCube){
+    //arr[side][layer][piece]
+    cubeColour=[]
+    for(var Si=0;Si<6;Si++){//side
+      count=0
+      side=[]
+      for(var ro=0;ro<sizeCube;ro++){
+        row=[]
+        for(var pi=0;pi<sizeCube;pi++){
+          count++
+          boxCol=document.getElementById((sides[Si])+(count)).getAttribute("ogcol")
+          row.push(boxCol)
+        }
+        side.push(row)
+      }
+      cubeColour.push(side)
+    }
+    return cubeColour;
+  }
+
+  
+  function spinSideArr(side){
+    const rows = side.length;
+    // Create a new empty matrix with swapped rows and columns (use )
+    const rotatedMatrix = new Array(rows).fill(0).map(() => new Array(rows).fill(0));
+
+    for (let i = 0; i < rows; i++) {
+      for (let j = 0; j < rows; j++) {
+        rotatedMatrix[j][(rows- 1) - i] = side[i][j];        
+      }
+    }
+
+    return rotatedMatrix;
+  }
+
+
+  function move(size,side,num,direction,save){
+    c = new CubeMovement()
+    c.movePi(size,side,num,direction,save)
+  }
+
+  //   THIS FUNCITON IS WRONG, IT ONLY CHEACKS ONE ROTATION OF CUBE
+  function cheackSame(currect,cubeState){
+    // make a funtion that makes the "read cube" into an orientation by looking at center
+    // 
+    for(var i=0;i<currect.length;i++){//side      
+      for(var j=0;j<currect[i].length;j++){
+        for(var k=0;k<currect[i][j].length;k++){//side   currect[i][j][k]=="-" ||
+          if(currect[i][j][k]!="-" && currect[i][j][k] != cubeState[i][j][k]){
+            return false
+          }
+        }
+      } 
+    }
+    return true
+  }
+
+  //NOT in USE
+  function progress(currect,cubeState){
+    // get center piece then rotate it to see a match
+    
+    for(var i=0;i<currect.length;i++){//side      
+      for(var j=0;j<currect[i].length;j++){
+        for(var k=0;k<currect[i][j].length;k++){//side   currect[i][j][k]=="-" ||
+          if(currect[i][j][k]!="-" && currect[i][j][k] != cubeState[i][j][k]){
+            return false
+          }
+        }
+      } 
+    }
+
+  }
+
+  //goes thrugh a side and finds all the ids with the matching trl's 
+  function getIDofNum(size,sideName,turnPi,sideRot,dir){
+    idsForSide = [];
+    for(var pi=0;pi<turnPi.length;pi++){// each piece in side
+      for(var i=0;i<size**2;i++){//side
+        sideDir = (document.getElementById(sideName+(i+1))).getAttribute("trl").split("|")[sideRot]
+        
+        if(sideDir.split(",").length>1){
+          sideDir = sideDir.split(",")[dir];
+        }
+        if(parseInt(sideDir)==turnPi[pi]){
+          idsForSide.push(sideName+(i+1));
+        }
+
+      }
+    }
+    return idsForSide;
+    
+  }
+
+
+  //
+  function getNumbersToSwap(sideArr, number, direction, sidedir, side){
+    sideArr = getOnlyRo(sideArr, sidedir); 
+
+    switch(side){
+      case "top":{
+        if(direction == "up"||direction == "bottom"){
+          for(var i=0; i<sideArr.length; i++){
+
+            if(sideArr[i].includes(number)){
+              if (direction == "up"){
+                return(sideArr[i].reverse());
+              }else{
+                return(sideArr[i]);
+              }
+            }
+          }
+        }else{
+          const spinArr = spinSideArr(sideArr)
+          for(var i=0;i < sideArr.length; i++){
+        
+            if(spinArr[i].includes(number)){
+              if (direction == "left"){
+                return(spinArr[i]);
+              }else{
+                return(spinArr[i].reverse());
+              }            
+            }
+          }
+        }
+      }
+      case "right":{
+        if(direction == "left" || direction == "right"){
+          for(var i=0; i<sideArr.length ;i++){
+
+            if(sideArr[i].includes(number)){
+              if (direction=="right"){
+                return(sideArr[i].reverse());
+              }else{
+                return(sideArr[i]);
+              }
+            }
+          }
+        }else{
+          const spinArr = spinSideArr(sideArr)
+          for(var i=0; i<sideArr.length; i++){
+
+            if(spinArr[i].includes(number)){
+              if (direction=="up"){
+                return(spinArr[i]);
+              }else{
+                return(spinArr[i].reverse());
+              }            
+            }
+          }
+        }
+      }
+      case "left":{
+        if(direction=="left"||direction=="right"){
+          for(var i=0; i<sideArr.length; i++){
+
+            if(sideArr[i].includes(number)){
+              if (direction=="right"){
+                return(sideArr[i].reverse());
+              }else{
+                return(sideArr[i]);
+              }
+            }
+          }
+        }else{
+          const spinArr = spinSideArr(sideArr)
+          for(var i=0; i<sideArr.length; i++){
+
+            if(spinArr[i].includes(number)){
+              if (direction=="up"){
+                return(spinArr[i]);
+              }else{
+                return(spinArr[i].reverse());
+              }            
+            }
+          }
+        }
+      }
+    }
+  }
+
+  //get only one part of an matrix
+  function getOnlyRo(sideArr, direction){
+    const Matrix = []
+    for(var i=0;i<sideArr.length;i++){
+      row=[]
+      for(var j=0;j<sideArr[i].length;j++){
+        row.push(sideArr[i][j][direction])
+      }
+      Matrix.push(row)
+    }
+    return(Matrix)
+  }
+
+  function SideTurning(side, sideArr, number, direction, sidedir){
+
+    sideArr = getOnlyRo(sideArr, sidedir);
+    number = parseInt(number[sidedir]);
+
+    sidesToTurn = [];
+    sideIndex = sides.indexOf(side);
+    sidesToTurn.push(sideIndex);
+  
+    if(side == "top"){
+      if(direction=="bottom"){
+        sidesToTurn.push(4)
+        sidesToTurn.push(sideIndex+1) //the oposite side of the one given
+        sidesToTurn.push(5)
+      }else if(direction == "up"){
+        sidesToTurn.push(5)
+        sidesToTurn.push(sideIndex+1)
+        sidesToTurn.push(4)
+      }else if(direction == "right"){
+        sidesToTurn.push(2)
+        sidesToTurn.push(sideIndex+1)
+        sidesToTurn.push(3)
+      }else{
+        sidesToTurn.push(3)
+        sidesToTurn.push(sideIndex+1)
+        sidesToTurn.push(2)
+      }
+
+      if(sideArr[0].includes(number)){
+        if(direction=="up"){
+          spinSideDirection(sides[3],sideArr.length,false) 
+        }else if(direction=="bottom"){
+          spinSideDirection(sides[3],sideArr.length,true) 
+        }
+      }
+      if(sideArr[sideArr.length-1].includes(number)){
+        if(direction=="up"){
+          spinSideDirection(sides[2],sideArr.length,true) 
+        }else if(direction=="bottom"){
+          spinSideDirection(sides[2],sideArr.length,false) 
+        }
+      }
+
+      spinArr=spinSideArr(sideArr)
+      if(spinArr[0].includes(number)){
+        if(direction == "left"){
+          spinSideDirection(sides[5],sideArr.length,true) 
+        }else if(direction == "right"){
+          spinSideDirection(sides[5],sideArr.length,false) 
+        }
+      }
+      if(spinArr[sideArr.length-1].includes(number)){
+        if(direction == "left"){
+          spinSideDirection(sides[4],sideArr.length,false) 
+        }else if(direction == "right"){
+          spinSideDirection(sides[4],sideArr.length,true) 
+        }
+      }
+
+
+    }else if(side == "right"){
+      if(direction == "bottom"){
+        sidesToTurn.push(1)
+        sidesToTurn.push(sideIndex+1)//the oposite side of the one given
+        sidesToTurn.push(0)
+      }else if(direction == "up"){
+        sidesToTurn.push(0)
+        sidesToTurn.push(sideIndex+1)
+        sidesToTurn.push(1)
+      }else if(direction ==  "right"){
+        sidesToTurn.push(5)
+        sidesToTurn.push(sideIndex+1)
+        sidesToTurn.push(4)
+      }else{
+        sidesToTurn.push(4)
+        sidesToTurn.push(sideIndex+1)
+        sidesToTurn.push(5)
+      }
+
+      if(sideArr[0].includes(number)){
+        if(direction=="left"){  
+          spinSideDirection(sides[0],sideArr.length,true) //top
+        }else if(direction=="right"){
+          spinSideDirection(sides[0],sideArr.length,false) //top
+        }
+      }
+      if(sideArr[sideArr.length-1].includes(number)){
+        if(direction=="left"){
+          spinSideDirection(sides[1],sideArr.length,false) //bottom
+        }else if(direction=="right"){
+          spinSideDirection(sides[1],sideArr.length,true) //bottom
+        }
+      }
+
+      spinArr = spinSideArr(sideArr)
+      if(spinArr[0].includes(number)){
+        if(direction=="up"){
+          spinSideDirection(sides[5],sideArr.length,true) //left
+        }else if(direction=="bottom"){
+          spinSideDirection(sides[5],sideArr.length,false) //left 4
+        }
+      }
+      if(spinArr[sideArr.length-1].includes(number)){
+        if(direction=="up"){
+          spinSideDirection(sides[4],sideArr.length,false) //back-right 5
+        }else if(direction=="bottom"){
+          spinSideDirection(sides[4],sideArr.length,true) //back-right
+        }
+      }
+
+
+    }else if(side=="left"){
+      if(direction == "bottom"){
+        sidesToTurn.push(1)
+        sidesToTurn.push(sideIndex+1)//the oposite side of the one given
+        sidesToTurn.push(0)
+      }else if(direction == "up"){
+        sidesToTurn.push(0)
+        sidesToTurn.push(sideIndex+1)
+        sidesToTurn.push(1)
+      }else if(direction ==  "right"){
+        sidesToTurn.push(2) // right
+        sidesToTurn.push(sideIndex+1)
+        sidesToTurn.push(3) // back-left
+      }else{
+        sidesToTurn.push(3)
+        sidesToTurn.push(sideIndex+1)
+        sidesToTurn.push(2)
+      }
+      if(sideArr[0].includes(number)){
+        if(direction=="left"){  
+          spinSideDirection(sides[1],sideArr.length,false) 
+        }else if(direction=="right"){
+          spinSideDirection(sides[1],sideArr.length,true) 
+        }
+      }
+      if(sideArr[sideArr.length-1].includes(number)){
+        if(direction=="left"){
+          spinSideDirection(sides[0],sideArr.length,true) 
+        }else if(direction=="right"){
+          spinSideDirection(sides[0],sideArr.length,false) 
+        }
+      }
+
+      spinArr = spinSideArr(sideArr)
+      if(spinArr[0].includes(number)){
+        if(direction=="up"){
+          spinSideDirection(sides[3],sideArr.length,false) 
+        }else if(direction=="bottom"){
+          spinSideDirection(sides[3],sideArr.length,true) 
+        }
+      }
+      if(spinArr[sideArr.length-1].includes(number)){
+        if(direction=="up"){
+          spinSideDirection(sides[2],sideArr.length,true) 
+        }else if(direction=="bottom"){
+          spinSideDirection(sides[2],sideArr.length,false) 
+        }
+      }
+    }
+
+    return([sides[sidesToTurn[0]],sides[sidesToTurn[1]],sides[sidesToTurn[2]],sides[sidesToTurn[3]]])
+
+
+    //--------------------------------------------------------------
+    //the side spun from will always be 0,2,4
+
+    
+    //--------------
+    //not done ffunction 
+
+    //if the last or first row has the number 
+    
+    //if the spin the array so that the rows and colloums swap, 
+    
+  }
+
+
+  //NOT IN USE
+  function seePice(size){
+    for(var i=0;i<6;i++){
+      for(var j=0;j<size**2;j++){
+        if(document.getElementById(sides[i]+(j +1))==null){
+          console.log(sides[i]+(j +1),"this has not got an id")
+        }else{
+          console.log(document.getElementById(sides[i]+(j +1)))
+        }
+      }
+    }
+  }
+
+
+  function speedCube(fast){
+    spinfaces = document.getElementsByClassName("spinface");
+    piece = document.getElementsByClassName("sq");
+    if(fast){
+      for (var i=0; i<spinfaces.length; i++){
+        spinfaces[i].classList.add("speedy");
+      }
+      for (var i=0; i<piece.length; i++){
+        piece[i].classList.add("speedy");
+      }
+    }else{
+      for (var i=0; i<spinfaces.length; i++){
+        spinfaces[i].classList.remove("speedy");
+      }
+      for (var i=0; i<piece.length; i++){
+        piece[i].classList.remove("speedy");
+      }
+    }
+
+  }
+
+
+  function randomMove(cubeS){
+    face      = faces[Math.floor(Math.random()*faces.length)]
+    piece     = cubeMap[sides.indexOf(face)][Math.floor(Math.random()*cubeS)][Math.floor(Math.random()*cubeS)];
+    direction = directions[Math.floor(Math.random()*directions.length)]
+    return(cubeS+","+face+","+piece.join("|")+","+direction)
+  }
+
+
+  //makes a array of movements that can be feed in to the moveList funtion to be executed 
+  function scramble(cubeS,len){
+    cubeMap    = getMapArray(cubeS)
+    directions = ["up","bottom","left","right"]
+    faces      = ["top","left","right"]
+    //to ensure that the cube will not move opposite directions
+    movements=[]
+    for (var i=0; i<len; i++){
+      randomMovement = randomMove(cubeS)
+      movements.push(randomMovement);
+    }
+
+    return movements;
+  }
+
+
+  function moveList(moveList,speed) {  
+    speedCube(true)
+    for (var i = 0; i<moveList.length+1; i++) {//add an extra one for makeing the cube slow
+      (function () {
+        setTimeout(function (index) {
+          if(index==moveList.length){// last one 
+            speedCube(false)
+            saveCube()
+            cubeProp = JSON.parse(localStorage.allCubes);
+            cubeProp[cubeIndex].doneScramble = true
+            localStorage.setItem('allCubes', JSON.stringify(cubeProp));
+          }else{
+            var par = moveList[index].split(",");
+            move(parseInt(par[0].trim()), par[1].trim(), par[2].trim(), par[3].trim());
+          }
+        }, speed*5*i , i);//feed the index into setTimeout
+      })()
+    }
+  }
+
+
+  //when i call a set time out on a function and re call the funtion i want each istance to be seperate and not change the variables in each case.
+  // i will fix this with a class 
+
+  function spinSideDirection(side,cubeSize,dir){
+    c = new CubeMovement()
+    c.spinside(side,cubeSize,dir)
+  }
+
+
+  //NOT YET WORKING
+  function moveWholeCube(direction){
+    delayForSwap = parseFloat(getComputedStyle(document.getElementsByClassName("spinface")[0]).transitionDuration.replace("s",""))*1000//get a face
+    switch(direction){
+      case "top-left":
+        document.getElementById("cube").style.transform+="rotateY(-90deg)";
+        setTimeout(function (index) {
+          document.getElementById("cube").style.transform+="rotateY(  90deg)";
+          for(var i=0;i<sizeOfCube;i++){
+            //console.log(sizeOfCube,'top',(i+1)+'|'+(i+1)+'|'+((i+1)*sizeOfCube),"left")
+            move(sizeOfCube,'top',(i+1)+'|'+(i+1)+'|'+((i+1)*sizeOfCube),"left")
+          }
+          console.log("call1")
+        }, delayForSwap)
+      
+      break;
+    }
+    
+    setTimeout(function (index) {
+      console.log("call2")
+      generateCube(readCube(sizeOfCube))
+    },delayForSwap*2+100)
+
+  }
+
+
+  function array3x3(stage){
+    steps=["cross","corers",]
+    if(stage=="cross"){
+      return(
+        [
+          [//side1
+            ["W","W","W"],
+            ["W","W","W"],
+            ["W","W","W"],
+          ],
+          //side2
+          fillside("-")
+          ,
+          [//side3
+            ["B","-","-"],
+            ["B","B","-"],
+            ["B","-","-"],
+          ],
+          [//side4
+            ["-","-","G"],
+            ["-","G","G"],
+            ["-","-","G"],
+          ],
+          [//side5
+            ["R","R","R"],
+            ["-","R","-"],
+            ["-","-","-"],
+          ],
+          [//side6
+            ["-","-","-"],
+            ["-","O","-"],
+            ["O","O","O"],
+          ],
+        ]
+      )
+    }else if("l1"){
+      
+    }
+  }
+
+
+  function fillside(colour){
+    return new Array(3).fill(0).map(() => new Array(3).fill(colour))
+  }
+
+
+  function saveCube(){
+    var changedState = JSON.parse(localStorage.allCubes);
+    //change the state 
+    changedState[cubeIndex].state = readCube(sizeOfCube);    
+    localStorage.setItem('allCubes', JSON.stringify(changedState));
+    console.log("saved");
+  }
+
+  function game(){
+    //the function "indexOf" returns -1 if the element cant be found
+    if(cubeIndex == -1){
+      document.getElementById("game").innerHTML = 
+      '<div class="noCubeBox">'
+      +'<div>sorry, this cube does not exist</div>'
+      +'<a class="link" href="Dashboard.html">back to Dashboard</a>'
+      +'</div>'
+      return;
+    };
+    setInterval(addToTime,1);
+    addPlayerInput();
+    var cubeProp = JSON.parse(localStorage.allCubes);
+
+    sizeOfCube = cubeProp[cubeIndex].state[0].length;
+    generateCube(populatecube(2));
+    /*  SCRAMBLE  */
+    scrambleLen = ((1/sizeOfCube+2)**5)
+    if( cubeProp[cubeIndex].doneScramble == false){
+      randomMovementsList = scramble(sizeOfCube, sizeOfCube**2*2+10)
+      moveList(randomMovementsList, scrambleLen); 
+    };
+  }
+
+  window.onload = game; 
+
+  /*
+
+  move( 5, 'left' , '21|1|1' ,'up')
+  move( 5, 'left' , '61|2|2' ,'up')
+  move( 5, 'left' , '11|3|3' ,'up')
+  move( 5, 'left' , '6|4|4' ,'up')
+  move( 5, 'left' , '1|5|5' ,'up')
+
+
+
+  move( 3, 'top' ,'9|9|7' ,'left')
+  move( 3, 'top' , '8|8|4' ,'bottom')
+
+  // this does not work for a 1x1 cube
+  move( 1, 'left' , '1|1|1' ,'bottom')
+  move( 1, 'left' , '1|1|1' ,'right')
+
+  */ 
+  //  * 5x5 *
+  //moveList(["5, top , 4|4|20 ,bottom","5, top , 12|12|8 ,up","5, top , 13|13|13 ,right"])
+  //  * 3x3 *
+  // moveList([
+  //   '3, left , 5|5|5 ,right',
+  //   '3, left , 5|5|5 ,up',
+  //   '3, right , 5|5|5 ,up',
+  //   '3, right , 1|1|1 ,right',
+  // ])
+  
+  //spinfaces[0].classList.add("speedy");
+
+  //checkerboard patern
+  
+ 
+</script>
+
+
+</html>

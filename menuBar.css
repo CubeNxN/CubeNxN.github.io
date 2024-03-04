@@ -1,0 +1,213 @@
+a{
+    display: block;
+    text-decoration: none;
+    color: black;
+}
+#home_under{
+    transition-duration: 1s;
+    background: rgb(202, 59, 59);
+}
+
+#dash_under{
+    transition-duration: 1s;
+    background: rgb(64, 64, 161);
+}
+
+#time_under{
+    transition-duration: 1s;
+    background: rgb(32, 162, 95);
+}
+
+.under{
+    width: 0px;
+    background: #ca3b3b;
+    height: 2px;
+    transition-duration: 1s;
+    margin-left: -3px;
+}
+#imgCon{
+    height: 40px;
+    width: 40px;
+    opacity: 0;
+    transition-delay: 0.2s;
+    transition-duration: 1s;
+    position: absolute;
+    left: 0;
+    background: linear-gradient(45deg, #ebffef, #cfe5ff);    
+}
+.imglogo{
+    width: 100%;
+    height: 100%;
+    transition-duration: 1s;
+}
+#bar{
+    transition-duration: 0.7s;
+    z-index: 10;
+    padding: 17px;
+    position: fixed;
+    transition-delay:0s;
+    background: #ffffff99;
+    box-shadow: 0px 0px 20px 5px rgb(0 9 55 / 40%);
+    top: 1%;
+    left: 1%;
+    width: 4vh;
+    border-radius: 10px;
+    height: 4vh;
+}
+.fog{
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    flex-direction: column;
+    justify-content: space-around;
+    transition-duration: 0.4s;
+    align-items: center;
+}
+.menuItem{
+    transition-duration: 1s;
+    transition-delay: 0.6s;
+    transition: opacity 1s cubic-bezier(1, 0.04, 0.58, 1);
+    opacity: 0;
+}
+.line{
+    width: 50px;
+    height: 10px;
+    background-color: rgba(136, 136, 136, 0.597);
+    transition-duration: 0.4s;
+    border-radius: 10px;
+    font-size: 120%;;
+    font-family: monospace;
+}
+#bar:hover>.fog>.line>.menuItem{
+    transform: rotate(-90deg);
+    transition-property:opacity;
+    opacity: 1;
+    margin-top: -69px;
+    transition-delay: 0.1s;
+}
+#bar:hover>.fog>.line{
+    cursor: pointer;
+    transform: rotate(90deg);
+}
+.menuItem:hover>.under{
+    width: 160%;
+}
+.menuItem:hover>#dash_under{
+    width:196%;
+}
+#bar:hover>.fog{
+    flex-direction: row;
+}
+#bar:hover{
+    width: 53vw;
+}
+
+#bar:hover>.fog>.home{
+    transition-duration: 0.4s;
+    transition-delay: 0.6s;
+    background: rgb(202, 59, 59);
+}
+#bar:hover>.fog>.dash{
+    transition-duration: 0.4s;
+    transition-delay: 0.6s;
+    background: rgb(64, 64, 161);
+}
+#bar:hover>.fog>.time{
+    transition-duration: 0.4s;
+    transition-delay: 0.6s;
+    background: rgb(32, 162, 95);
+}
+#bar:hover>.fog>#imgCon{
+    opacity: 1;
+    border-radius: 12px;
+    padding: 12px;
+}
+#bar:hover>.fog>#imgCon>.imglogo{
+    rotate: 360deg;
+}
+.footer{
+    height: 12vw;
+    background-color: red;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+}
+insertfooter{
+    width: 100%;
+    height: auto;
+}
+
+.title-contain{
+    display: flex;
+    width: 100%;
+    background: linear-gradient(180deg, rgb(182 182 255 / 17%), transparent);
+    justify-content: center;
+}
+
+.title {
+    font-size: 7vw;
+    background: #ffffff8c;
+    width: fit-content;
+    padding: 14px;
+    padding-left: 80px;
+    padding-right: 80px;
+    border-radius: 121px;
+    margin-top: 24px;
+    font-family: monospace;
+}
+.outterContainLD{
+    position: fixed;
+    right: 20px;
+    top: 20px;
+    background: #233351 !important;
+    width: 2vh;
+    height: 2vh;
+    z-index: 10;
+    border-radius: 122px;
+    box-shadow: 0px 0px 20px 2px rgb(0 9 55 / 40%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.outterContainLD.dark{
+    background: white !important ;
+}
+.backLD{
+    background: white;
+    width: 80%;
+    height: 80%;
+    border-radius: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.side{
+    width: 43%;
+    height: 88%;
+    transition-duration: 1s;
+}
+.lightSide{
+    background: white;
+    border-top-left-radius: 100px;
+    border-bottom-left-radius: 100px;
+}
+.lightSide.dark{
+    background: #233351;
+}
+.darkSide{
+    background: #233351;
+    border-top-right-radius: 100px;
+    border-bottom-right-radius: 100px;
+}
+.darkSide.dark{
+    background: white !important;
+}
+.dark{
+    background: linear-gradient(180deg, #00124f, #000000c7)!important;
+    color: white;
+}
