@@ -1516,9 +1516,7 @@ function getSideLocation(sidesLen,offset){
 function generateCube(CubeColArr){
   sizeCube = CubeColArr[0][0].length;
 
-  boxSize = (cubeLen/sizeCube);
-  
-  document.getElementsByTagName('style')[0].innerHTML += '.cu{height:'+boxSize+'px ; width:'+boxSize+'px  ;} ';
+  document.getElementsByTagName('style')[0].innerHTML += '.cu{height: 18.666666666666668px ; width: 18.666666666666668px  ;} ';
 
   const sideLocation      = getSideLocation(cubeLen, true);
   const sideLocationnNoff = getSideLocation(cubeLen, false);
