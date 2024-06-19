@@ -242,6 +242,7 @@
     width: 100%;
     background:repeating-radial-gradient(black, transparent 100px) ;
   }
+  .cu{height: 18.666666666666668px ; width: 18.666666666666668px  ;} 
 
   .container {
     perspective: 1000px;
@@ -1516,7 +1517,8 @@ function getSideLocation(sidesLen,offset){
 function generateCube(CubeColArr){
   sizeCube = CubeColArr[0][0].length;
 
-  document.getElementsByTagName('style')[0].innerHTML += '.cu{height: 18.666666666666668px ; width: 18.666666666666668px  ;} ';
+  boxSize = (cubeLen/sizeCube);
+  
 
   const sideLocation      = getSideLocation(cubeLen, true);
   const sideLocationnNoff = getSideLocation(cubeLen, false);
